@@ -8,7 +8,14 @@
   border-radius: 2px;
   font-size: 18px;
   line-height: 22px;
+  cursor: pointer;
+  transition: opacity .3s;
 }
+
+.popup__btn:hover {
+  opacity: .8;
+}
+
 @media (max-width: 420px)  {
   .popup__btn {
     font-size: 14px;

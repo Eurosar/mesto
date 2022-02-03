@@ -4,6 +4,8 @@
   right: -40px;
   max-width: 32px;
   max-height: 32px;
+  cursor: pointer;
+  transition: opacity .3s;
 }
 
 .popup__close:hover {

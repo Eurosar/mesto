@@ -5,6 +5,7 @@
   background-image: url("../../../icons/plus.svg");
   background-repeat: no-repeat;
   background-position: center;
+  transition: opacity .3s;
 }
 
 .profile__add-button:hover {
