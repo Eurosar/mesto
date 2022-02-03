@@ -6,7 +6,13 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-@media (max-width: 694px)  {
+
+.profile__add-button:hover {
+  background-color: #000000;
+  opacity: .6;
+}
+
+@media (max-width: 910px)  {
   .profile__add-button {
     min-width: 278px;
   }

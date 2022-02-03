@@ -3,7 +3,7 @@
   max-height: 120px;
   border-radius: 50%;
 }
-@media (max-width: 524px)  {
+@media (max-width: 739px)  {
   .profile__image {
     margin: 0 0 26px 0;
   }

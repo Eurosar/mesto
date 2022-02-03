@@ -15,7 +15,10 @@
       <section class="profile">
         <img class="profile__image" src="./images/avatar.jpg" alt="Аватарка">
         <div class="profile__info">
-          <h2 class="profile__name">Жак-Ив Кусто<a href="" class="profile__edit-button"></a></h2>
+          <div class="profile__edit-name">
+            <h2 class="profile__name">Жак-Ив Кусто</h2>
+            <a href="" class="profile__edit-button"></a>
+          </div>
           <p class="profile__job">Исследователь океана</p>
         </div>
         <a href="" class="profile__add-button"></a>
@@ -65,6 +68,25 @@
             </div>
           </li>
         </ul>
+      </section>
+      <section class="popup">
+        <div class="popup__bg">
+          <div class="popup__body">
+            <form class="popup__form">
+              <h2 class="popup__title">Редактировать профиль</h2>
+              <img src="./icons/close-icon.svg" alt="Закрыть" class="popup__close">
+              <div class="popup__inputs">
+              <label class="popup__label">
+                <input class="popup__input" type="text" name="name">
+              </label>
+              <label class="popup__label">
+                <input class="popup__input" type="text" name="job">
+              </label>
+              </div>
+              <button type="submit" class="popup__btn">Сохранить</button>
+            </form>
+          </div>
+        </div>
       </section>
     </main>
     <footer class="footer">
