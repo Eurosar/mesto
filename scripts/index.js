@@ -34,3 +34,17 @@ function formSubmitHandler(evt) {
 // жмем кнопку сохранить данные в попапе
 formElement.addEventListener('submit', formSubmitHandler);
 
+// жмем кнопку сохранить Enter
+nameInput.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector('.popup__btn').click();
+    }
+});
+jobInput.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector('.popup__btn').click();
+    }
+});
+
