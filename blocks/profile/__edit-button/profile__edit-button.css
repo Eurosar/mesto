@@ -1,17 +1,20 @@
 .profile__edit-button {
-  display: block;
   min-width: 24px;
-  background-image: url('../../../icons/edit-button.png');
+  background-image: url('../../../icons/edit-button.svg');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: 0 65%;
   margin: 0;
   padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
   transition: opacity .3s;
+  cursor: pointer;
 }
 
 .profile__edit-button:hover {
-  background-color: #000000;
   opacity: .6;
 }
 
