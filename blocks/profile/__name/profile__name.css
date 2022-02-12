@@ -10,8 +10,8 @@
 }
 @media (max-width: 366px)  {
   .profile__name {
-    margin: 0 0 0 28px;
     font-size: 27px;
     line-height: 29px;
+    padding: 0 10px 0 0;
   }
 }

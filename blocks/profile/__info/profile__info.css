@@ -1,11 +1,9 @@
 .profile__info {
-  min-width: 100px;
+  min-width: 0;
   max-width: 550px;
-  flex: 1 1 550px;
+  flex: 1 1 auto;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 @media (max-width: 739px)  {
   .profile__info {
@@ -15,6 +13,6 @@
 }
 @media (max-width: 496px)  {
   .profile__info {
-    padding: 0 10px 36px;
+    padding: 0 10px 33px;
   }
 }

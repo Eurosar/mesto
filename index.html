@@ -17,11 +17,11 @@
         <div class="profile__info">
           <div class="profile__edit-name">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <a href="#" class="profile__edit-button"></a>
+            <button type="button" class="profile__edit-button"></button>
           </div>
           <p class="profile__job">Исследователь океана</p>
         </div>
-        <a href="" class="profile__add-button"></a>
+        <button type="button" class="profile__add-button"></button>
       </section>
       <section class="places">
         <ul class="places__list">
@@ -29,66 +29,66 @@
             <img class= "place__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
             <div class="place__name">
               <h2 class="place__title">Карачаевск</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
           <li class="place">
             <img class= "place__image" src="./images/elbrus.jpg" alt="Гора Эльбрус">
             <div class="place__name">
               <h2 class="place__title">Гора Эльбрус</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
           <li class="place">
             <img class= "place__image" src="./images/dombai.jpg" alt="Домбай">
             <div class="place__name">
               <h2 class="place__title">Домбай</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
           <li class="place">
             <img class= "place__image" src="./images/elbrus.jpg" alt="Гора Эльбрус">
             <div class="place__name">
               <h2 class="place__title">Гора Эльбрус</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
           <li class="place">
             <img class= "place__image" src="./images/dombai.jpg" alt="Домбай">
             <div class="place__name">
               <h2 class="place__title">Домбай</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
           <li class="place">
             <img class= "place__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
             <div class="place__name">
               <h2 class="place__title">Карачаево-Черкессия</h2>
-              <a href="#" class="place__favorite"></a>
+              <button type="button" class="place__favorite"></button>
             </div>
           </li>
         </ul>
       </section>
-      <section class="popup">
+      <div class="popup">
         <div class="popup__container">
-          <form class="popup__form">
+          <form name="profile-editor" class="popup__form">
             <h2 class="popup__title">Редактировать профиль</h2>
-            <img src="./icons/close-icon.svg" alt="Закрыть" class="popup__close">
+            <button type="button" class="popup__close"></button>
             <div class="popup__inputs">
               <label class="popup__label">
-                <input class="popup__input popup__input_name" type="text" name="name">
+                <input class="popup__input popup__input_text_name" type="text" name="name">
               </label>
               <label class="popup__label">
-                <input class="popup__input popup__input_job" type="text" name="job">
+                <input class="popup__input popup__input_text_job" type="text" name="job">
               </label>
             </div>
             <button type="submit" class="popup__btn">Сохранить</button>
           </form>
         </div>
-      </section>
+      </div>
     </main>
     <footer class="footer">
-      © 2020 Mesto Russia
+      &#169; 2020 Mesto Russia
     </footer>
   </div>
   <script src="./scripts/index.js"></script>
