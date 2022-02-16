@@ -1,19 +1,29 @@
 const popup = document.querySelector('.popup');
-const popupOpen = document.querySelector('.profile__edit-button');
-const popupClose = document.querySelector('.popup__close');
-let formElement = document.querySelector('.popup__form');
+const profileEditButton = document.querySelector('.profile__edit-button');
+const profileAddButton = document.querySelector('.profile__add-button');
+const popupClose = popup.querySelector('.popup__close');
+const formElement = popup.querySelector('.popup__form');
 
 //Обработчик данных input в popup
-let nameInput = formElement.querySelector('.popup__input_text_name');
-let jobInput = formElement.querySelector('.popup__input_text_job');
-let nameProfile = document.querySelector('.profile__name');
-let jobProfile = document.querySelector('.profile__job');
+const nameInput = formElement.querySelector('.popup__input_text_name');
+const jobInput = formElement.querySelector('.popup__input_text_job');
+const nameProfile = document.querySelector('.profile__name');
+const jobProfile = document.querySelector('.profile__job');
 
+// Присвоение input значений из блока profile
+function assignInputsValue() {
+    nameInput.value = nameProfile.textContent;
+    jobInput.value = jobProfile.textContent;
+}
+
+// Присвоение textContent из input в блок Profile
+function assignTextContentFromInputs() {
+    nameProfile.textContent = nameInput.value;
+    jobProfile.textContent = jobInput.value;
+}
 //Присвоение класса popup для открытия
 function addPopupOpened() {
     popup.classList.add('popup_opened');
-    nameInput.value = nameProfile.textContent;
-    jobInput.value = jobProfile.textContent;
 }
 
 //Удаление класса popup для закрытия
@@ -22,19 +32,21 @@ function removePopupOpened() {
 }
 
 // сохраняем данные на странице
-function formSubmitHandler(evt) {
+function formProfileEditSubmitHandler(evt) {
     evt.preventDefault();
-    nameProfile.textContent = nameInput.value;
-    jobProfile.textContent = jobInput.value;
+    assignTextContentFromInputs();
     removePopupOpened();
 }
 
-//Открытие popup
+//Закрытие popup
 popupClose.addEventListener('click', removePopupOpened);
 
-//Закрытие popup
-popupOpen.addEventListener('click', addPopupOpened);
+//Открытие popup edit
+profileEditButton.addEventListener('click', () => {
+    addPopupOpened();
+    assignInputsValue();
+});
 
 // жмем кнопку сохранить данные в попапе
-formElement.addEventListener('submit', formSubmitHandler);
+formElement.addEventListener('submit', formProfileEditSubmitHandler);
 
