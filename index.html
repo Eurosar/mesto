@@ -24,62 +24,46 @@
         <button type="button" class="profile__add-button"></button>
       </section>
       <section class="places">
-        <ul class="places__list">
+        <ul class="places__list"></ul>
+        <template class="place-template">
           <li class="place">
-            <img class= "place__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
+            <button type="button" class="place__cart"></button>
+            <img src="" alt="" class="place__image">
             <div class="place__name">
-              <h2 class="place__title">Карачаевск</h2>
+              <h2 class="place__title"></h2>
               <button type="button" class="place__favorite"></button>
             </div>
           </li>
-          <li class="place">
-            <img class= "place__image" src="./images/elbrus.jpg" alt="Гора Эльбрус">
-            <div class="place__name">
-              <h2 class="place__title">Гора Эльбрус</h2>
-              <button type="button" class="place__favorite"></button>
-            </div>
-          </li>
-          <li class="place">
-            <img class= "place__image" src="./images/dombai.jpg" alt="Домбай">
-            <div class="place__name">
-              <h2 class="place__title">Домбай</h2>
-              <button type="button" class="place__favorite"></button>
-            </div>
-          </li>
-          <li class="place">
-            <img class= "place__image" src="./images/elbrus.jpg" alt="Гора Эльбрус">
-            <div class="place__name">
-              <h2 class="place__title">Гора Эльбрус</h2>
-              <button type="button" class="place__favorite"></button>
-            </div>
-          </li>
-          <li class="place">
-            <img class= "place__image" src="./images/dombai.jpg" alt="Домбай">
-            <div class="place__name">
-              <h2 class="place__title">Домбай</h2>
-              <button type="button" class="place__favorite"></button>
-            </div>
-          </li>
-          <li class="place">
-            <img class= "place__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
-            <div class="place__name">
-              <h2 class="place__title">Карачаево-Черкессия</h2>
-              <button type="button" class="place__favorite"></button>
-            </div>
-          </li>
-        </ul>
+        </template>
       </section>
-      <div class="popup">
+      <div class="popup popup__profile-editor">
         <div class="popup__container">
-          <form name="profile-editor" class="popup__form">
+          <form name="profile-editor" class="popup__form form-profile-editor">
             <h2 class="popup__title">Редактировать профиль</h2>
-            <button type="button" class="popup__close"></button>
+            <button type="button" class="popup__close close-profile-editor"></button>
             <div class="popup__inputs">
               <label class="popup__label">
                 <input class="popup__input popup__input_text_name" type="text" name="name">
               </label>
               <label class="popup__label">
                 <input class="popup__input popup__input_text_job" type="text" name="job">
+              </label>
+            </div>
+            <button type="submit" class="popup__btn">Сохранить</button>
+          </form>
+        </div>
+      </div>
+      <div class="popup popup__add-places">
+        <div class="popup__container">
+          <form name="add-places" class="popup__form form-add-places">
+            <h2 class="popup__title">Новое место</h2>
+            <button type="button" class="popup__close close-add-places"></button>
+            <div class="popup__inputs">
+              <label class="popup__label">
+                <input class="popup__input popup__input_text_name-place" type="text" name="place-name" placeholder="Название">
+              </label>
+              <label class="popup__label">
+                <input class="popup__input popup__input_text_image-link" type="text" name="image-link" placeholder="Ссылка на картинку">
               </label>
             </div>
             <button type="submit" class="popup__btn">Сохранить</button>
