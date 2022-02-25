@@ -2,12 +2,16 @@ const popupProfileEditor = document.querySelector('.popup__profile-editor');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const popupAddPlaces = document.querySelector('.popup__add-places');
 const profileAddButton = document.querySelector('.profile__add-button');
+const popupPlaceImage = document.querySelector('.popup__place-image');
 const popupCloseProfileEditor = document.querySelector('.close-profile-editor');
 const popupCloseAddPlaces = document.querySelector('.close-add-places');
+const popupClosePlaceImage = document.querySelector('.close-place-image');
 const formProfileEditElement = document.querySelector('.form-profile-editor');
 const formProfileAddElement = document.querySelector('.form-add-places');
 const placesList = document.querySelector('.places__list');
 const templatePlace = document.querySelector('.place-template');
+const popupContainerImage = document.querySelector('.container-image__image');
+const popupContainerTitle = document.querySelector('.container-image__image-title');
 
 //Обработчик данных input в popup edit
 const nameInput = formProfileEditElement.querySelector('.popup__input_text_name');
@@ -64,15 +68,28 @@ function assignTextContentFromInputs() {
 function createPlaceElement(item) {
     // Клонируем шаблон
     const placeElement = templatePlace.content.cloneNode(true);
+
     placeElement.querySelector('.place__title').textContent = item.name;
     placeElement.querySelector('.place__image').src = item.link;
     placeElement.querySelector('.place__image').alt = item.name;
     placeElement.querySelector('.place__favorite').addEventListener('click', handlerLikePlace);
     placeElement.querySelector('.place__cart').addEventListener('click', handlerRemovePlace);
+    placeElement.querySelector('.place__image').addEventListener('click', handlerClickImageOpen);
     
     return placeElement;
 
 }
+
+//--Открытие Image
+function handlerClickImageOpen (event) {
+    const placeElement = event.target.closest('.place__image');
+    popupContainerImage.src = placeElement.src;
+    popupContainerImage.alt = placeElement.alt;
+    popupContainerTitle.textContent = placeElement.alt;
+        openPopup(popupPlaceImage);
+    
+}
+
 // Лайкаем фотографии
 function handlerLikePlace(event) {
     const placeElement = event.target.closest('.place__favorite');
@@ -148,6 +165,11 @@ popupCloseProfileEditor.addEventListener('click', () => {
 //--Закрытие Place
 popupCloseAddPlaces.addEventListener('click', () => {
     removePopup(popupAddPlaces);
+});
+
+//--Закрытие Image
+popupClosePlaceImage.addEventListener('click', () => {
+    removePopup(popupPlaceImage);
 });
 
 //Открытие popups
