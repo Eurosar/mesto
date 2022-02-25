@@ -23,35 +23,6 @@ const jobProfile = document.querySelector('.profile__job');
 const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');
 const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_image-link');
 
-//Массив карточек мест из коробки
-const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-];
-
-
 // Присвоение input значений из блока profile
 function assignInputsValue() {
     nameInput.value = nameProfile.textContent;
@@ -64,30 +35,31 @@ function assignTextContentFromInputs() {
     jobProfile.textContent = jobInput.value;
 }
 
-// Создаем карточку изображения с названием в блоке Places
 function createPlaceElement(item) {
     // Клонируем шаблон
     const placeElement = templatePlace.content.cloneNode(true);
+    const placeImage = placeElement.querySelector('.place__image');
 
     placeElement.querySelector('.place__title').textContent = item.name;
-    placeElement.querySelector('.place__image').src = item.link;
-    placeElement.querySelector('.place__image').alt = item.name;
+    placeImage.src = item.link;
+    placeImage.alt = item.name;
     placeElement.querySelector('.place__favorite').addEventListener('click', handlerLikePlace);
     placeElement.querySelector('.place__cart').addEventListener('click', handlerRemovePlace);
-    placeElement.querySelector('.place__image').addEventListener('click', handlerClickImageOpen);
-    
+    placeImage.addEventListener('click', () => {
+        handlerClickImageOpen(item.link, item.name)
+    });
+
     return placeElement;
 
 }
 
 //--Открытие Image
-function handlerClickImageOpen (event) {
-    const placeElement = event.target.closest('.place__image');
-    popupContainerImage.src = placeElement.src;
-    popupContainerImage.alt = placeElement.alt;
-    popupContainerTitle.textContent = placeElement.alt;
-        openPopup(popupPlaceImage);
-    
+function handlerClickImageOpen (src, alt) {
+    popupContainerImage.src = src;
+    popupContainerImage.alt = alt;
+    popupContainerTitle.textContent = alt;
+    openPopup(popupPlaceImage);
+
 }
 
 // Лайкаем фотографии
@@ -103,15 +75,14 @@ function handlerRemovePlace(event) {
 }
 
 // Перебираем массив карточек и выводим их на странице
-function arrayPlace() {
+function outputAnArrayOfCards() {
     initialCards.forEach((item) => {
         const arrayPlaceElement = createPlaceElement(item);
         placesList.append(arrayPlaceElement);
     });
 
 }
-
-arrayPlace();
+outputAnArrayOfCards();
 
 // Присваиваем textContent и src из input в блок Place
 function assignContentPlaceInputs() {
@@ -128,21 +99,14 @@ function assignContentPlaceInputs() {
 function handlerSubmitFormAddPlaces(e) {
     e.preventDefault();
     assignContentPlaceInputs();
-    cleanOutPlaceInputs();
-    removePopup(popupAddPlaces);
-}
-
-// Очищаем inputs в handlerSubmitFormAddPlaces
-function cleanOutPlaceInputs() {
-    namePlaceInput.value = '';
-    imageLinkInput.value = '';
+    closePopup(popupAddPlaces);
 }
 
 // сохраняем данные Profile  на странице
 function handlerSubmitFormProfileEdit(evt) {
     evt.preventDefault();
     assignTextContentFromInputs();
-    removePopup(popupProfileEditor);
+    closePopup(popupProfileEditor);
 }
 
 //Присвоение класса для открытия popup
@@ -151,7 +115,7 @@ function openPopup(popup) {
 }
 
 //Удаление класса для закрытия popup
-function removePopup(popup) {
+function closePopup(popup) {
     popup.classList.remove('popup_opened');
 }
 
@@ -159,28 +123,29 @@ function removePopup(popup) {
 
 //--Закрытие Profile
 popupCloseProfileEditor.addEventListener('click', () => {
-    removePopup(popupProfileEditor);
+    closePopup(popupProfileEditor);
 });
 
 //--Закрытие Place
 popupCloseAddPlaces.addEventListener('click', () => {
-    removePopup(popupAddPlaces);
+    closePopup(popupAddPlaces);
 });
 
 //--Закрытие Image
 popupClosePlaceImage.addEventListener('click', () => {
-    removePopup(popupPlaceImage);
+    closePopup(popupPlaceImage);
 });
 
 //Открытие popups
 //--Открытие Profile
 profileEditButton.addEventListener('click', () => {
-    openPopup(popupProfileEditor);
     assignInputsValue();
+    openPopup(popupProfileEditor);
 });
 
 //--Открытие Place
 profileAddButton.addEventListener('click', () => {
+    formProfileAddElement.reset(); // Очищаем inputs в handlerSubmitFormAddPlaces
     openPopup(popupAddPlaces);
 });
 
