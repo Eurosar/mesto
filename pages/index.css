@@ -23,7 +23,7 @@
 @import url(../blocks/place/__cart/place__cart.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/popup/popup.css);
-@import url(../blocks/popup/__place-image/popup__place-image.css);
+@import url(../blocks/popup-place-image/popup-place-image.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__close/popup__close.css);
 @import url(../blocks/popup/__container/popup__container.css);
