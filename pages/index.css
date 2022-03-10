@@ -38,6 +38,23 @@
 @import url(../blocks/container-image/__image-title/container-image__image-title.css);
 
 
+.popup__button_disabled {
+  background-color: #e5e5e5;
+  border: 1px solid #000000;
+  color: #000000;
+  opacity: .2;
+  cursor: default;
+}
+.popup__button_disabled:hover{
+  background-color: #e5e5e5;
+  border: 1px solid #000000;
+  color: #000000;
+  opacity: .2;
+  cursor: default;
+}
+.popup__input_type_error {}
+.popup__error_visible {}
+
 
 
 
