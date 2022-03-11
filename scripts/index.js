@@ -25,131 +25,166 @@ const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_i
 
 // Присвоение input значений из блока profile
 function assignInputsValue() {
-    nameInput.value = nameProfile.textContent;
-    jobInput.value = jobProfile.textContent;
+  nameInput.value = nameProfile.textContent;
+  jobInput.value = jobProfile.textContent;
 }
 
 // Присвоение textContent из input в блок Profile
 function assignTextContentFromInputs() {
-    nameProfile.textContent = nameInput.value;
-    jobProfile.textContent = jobInput.value;
+  nameProfile.textContent = nameInput.value;
+  jobProfile.textContent = jobInput.value;
 }
 
 function createPlaceElement(item) {
-    // Клонируем шаблон
-    const placeElement = templatePlace.content.cloneNode(true);
-    const placeImage = placeElement.querySelector('.place__image');
+  // Клонируем шаблон
+  const placeElement = templatePlace.content.cloneNode(true);
+  const placeImage = placeElement.querySelector('.place__image');
 
-    placeElement.querySelector('.place__title').textContent = item.name;
-    placeImage.src = item.link;
-    placeImage.alt = item.name;
-    placeElement.querySelector('.place__favorite').addEventListener('click', handlerLikePlace);
-    placeElement.querySelector('.place__cart').addEventListener('click', handlerRemovePlace);
-    placeImage.addEventListener('click', () => {
-        handlerClickImageOpen(item.link, item.name)
-    });
+  placeElement.querySelector('.place__title').textContent = item.name;
+  placeImage.src = item.link;
+  placeImage.alt = item.name;
+  placeElement.querySelector('.place__favorite').addEventListener('click', handlerLikePlace);
+  placeElement.querySelector('.place__cart').addEventListener('click', handlerRemovePlace);
+  placeImage.addEventListener('click', () => {
+    handlerClickImageOpen(item.link, item.name);
+  });
 
-    return placeElement;
+  return placeElement;
 
 }
 
 //--Открытие Image
-function handlerClickImageOpen (src, alt) {
-    popupContainerImage.src = src;
-    popupContainerImage.alt = alt;
-    popupContainerTitle.textContent = alt;
-    openPopup(popupPlaceImage);
+function handlerClickImageOpen(src, alt) {
+  popupContainerImage.src = src;
+  popupContainerImage.alt = alt;
+  popupContainerTitle.textContent = alt;
+  openPopup(popupPlaceImage);
 
 }
 
-// Лайкаем фотографии
+// Like фотографии
 function handlerLikePlace(event) {
-    const placeElement = event.target.closest('.place__favorite');
-    placeElement.classList.toggle('place__favorite_active');
+  const placeElement = event.target.closest('.place__favorite');
+  placeElement.classList.toggle('place__favorite_active');
 }
 
 // Удаляем карточки Place со страницы по нажатию на корзину
 function handlerRemovePlace(event) {
-    const placeElement = event.target.closest('.place');
-    placeElement.remove();
+  const placeElement = event.target.closest('.place');
+  placeElement.remove();
 }
 
 // Перебираем массив карточек и выводим их на странице
 function outputAnArrayOfCards() {
-    initialCards.forEach((item) => {
-        const arrayPlaceElement = createPlaceElement(item);
-        placesList.append(arrayPlaceElement);
-    });
+  initialCards.forEach((item) => {
+    const arrayPlaceElement = createPlaceElement(item);
+    placesList.append(arrayPlaceElement);
+  });
 
 }
+
 outputAnArrayOfCards();
 
 // Присваиваем textContent и src из input в блок Place
 function assignContentPlaceInputs() {
-    const item = {
-        name: namePlaceInput.value,
-        link: imageLinkInput.value
-    };
-    const placeCard = createPlaceElement(item);
-    placesList.prepend(placeCard);
+  const item = {
+    name: namePlaceInput.value,
+    link: imageLinkInput.value
+  };
+  const placeCard = createPlaceElement(item);
+  placesList.prepend(placeCard);
 
 }
 
 // Выводим новую карточку в блоке Places
 function handlerSubmitFormAddPlaces(e) {
-    e.preventDefault();
-    assignContentPlaceInputs();
-    closePopup(popupAddPlaces);
+  e.preventDefault();
+  assignContentPlaceInputs();
+  closePopup(popupAddPlaces);
 }
 
-// сохраняем данные Profile  на странице
+// сохраняем данные Profile на странице
 function handlerSubmitFormProfileEdit(evt) {
-    evt.preventDefault();
-    assignTextContentFromInputs();
-    closePopup(popupProfileEditor);
+  evt.preventDefault();
+  assignTextContentFromInputs();
+  closePopup(popupProfileEditor);
 }
 
 //Присвоение класса для открытия popup
 function openPopup(popup) {
-    popup.classList.add('popup_opened');
+  popup.classList.add('popup_opened');
 }
 
 //Удаление класса для закрытия popup
 function closePopup(popup) {
-    popup.classList.remove('popup_opened');
+  popup.classList.remove('popup_opened');
 }
 
 //Закрытие popups
 
 //--Закрытие Profile
 popupCloseProfileEditor.addEventListener('click', () => {
-    closePopup(popupProfileEditor);
+  closePopup(popupProfileEditor);
 });
 
 //--Закрытие Place
 popupCloseAddPlaces.addEventListener('click', () => {
-    closePopup(popupAddPlaces);
+  closePopup(popupAddPlaces);
 });
 
 //--Закрытие Image
 popupClosePlaceImage.addEventListener('click', () => {
-    closePopup(popupPlaceImage);
+  closePopup(popupPlaceImage);
 });
 
 //Открытие popups
 //--Открытие Profile
 profileEditButton.addEventListener('click', () => {
-    assignInputsValue();
-    openPopup(popupProfileEditor);
+  assignInputsValue();
+  openPopup(popupProfileEditor);
+  enableValidation(settingObject);
 });
 
 //--Открытие Place
 profileAddButton.addEventListener('click', () => {
-    formProfileAddElement.reset(); // Очищаем inputs в handlerSubmitFormAddPlaces
-    openPopup(popupAddPlaces);
+  formProfileAddElement.reset(); // Очищаем inputs в handlerSubmitFormAddPlaces
+  openPopup(popupAddPlaces);
+  enableValidation(settingObject);
 });
 
-// жмем кнопку сохранить данные в попапах
+// жмем кнопку сохранить данные в popups
 formProfileEditElement.addEventListener('submit', handlerSubmitFormProfileEdit);
 formProfileAddElement.addEventListener('submit', handlerSubmitFormAddPlaces);
 
+
+// функция закрытия popup по клику на оверлей
+const setEventListenersPopups = () => {
+  // находим все popups и создаем из них массив
+  const popupList = Array.from(document.querySelectorAll('.popup'));
+
+  const popupListIterator = (popupElement) => {
+
+    const handlerCloseOverlayPopup = (event) => {
+      // если нажимаем на подложку, то popup закроется
+      if (event.target.classList.contains('popup__overlay')) {
+        closePopup(popupElement);
+      }
+    };
+    // Объявим функцию закрытия popup клавишей Esc
+    const handlerCloseEscPopup = (event) => {
+      if (popupElement.classList.contains('popup_opened')) {
+        if (event.key === 'Escape') {
+          closePopup(popupElement);
+        }
+      }
+    };
+    // вешаем слушателя на каждый popup
+    popupElement.addEventListener('click', handlerCloseOverlayPopup);
+    document.addEventListener('keydown', handlerCloseEscPopup);
+  };
+  // перебираем массив popups
+  popupList.forEach(popupListIterator);
+};
+
+// вызываем функцию закрытия popup
+setEventListenersPopups();

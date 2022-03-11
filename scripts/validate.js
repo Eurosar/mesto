@@ -10,7 +10,7 @@ const settingObject = {
 // Объявим функцию поиска класса поля ошибки в DOM
 const getErrorElement = (formElement, inputElement) => {
   return formElement.querySelector(`.${inputElement.id}-error`);
-}
+};
 
 // Объявим функцию показа ошибки, если поле невалидно
 const showInputError = (object, formElement, inputElement, errorMessage) => {
@@ -18,7 +18,7 @@ const showInputError = (object, formElement, inputElement, errorMessage) => {
   inputElement.classList.add(object.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(object.errorClass);
-}
+};
 
 //Объявим функцию скрытия ошибки, если поле валидно
 const hideInputError = (object, formElement, inputElement) => {
@@ -26,12 +26,11 @@ const hideInputError = (object, formElement, inputElement) => {
   inputElement.classList.remove(object.inputErrorClass);
   errorElement.classList.remove(object.errorClass);
   errorElement.textContent = '';
-}
+};
 
 // Объявим функцию проверки валидации формы
 const checkValidity = (formElement, inputElement) => {
-  console.log(inputElement.validity);
-  const isInputNotValid = !inputElement.validity.valid
+  const isInputNotValid = !inputElement.validity.valid;
   if (isInputNotValid) {
     showInputError(settingObject, formElement, inputElement, inputElement.validationMessage);
   } else {
@@ -66,15 +65,15 @@ const setEventListeners = (object, formElement) => {
     const handleInput = () => {
       checkValidity(formElement, inputElement);
       toggleButtonState(settingObject, inputlist, buttonElement);
-    }
+    };
     // Навесим слушателя на инпуты  
     inputElement.addEventListener('input', handleInput);
-  }
+  };
   toggleButtonState(settingObject, inputlist, buttonElement);
 
   // Переберем полученный массив
   inputlist.forEach(inputListIterator);
-}
+};
 
 // Объявим функцию, которая найдет и переберет все формы
 const enableValidation = object => {
@@ -84,14 +83,14 @@ const enableValidation = object => {
     // Навесим слушателя на отправку формы  
     formElement.addEventListener('submit', handleFormSubmit);
     setEventListeners(settingObject, formElement);
-  }
-    // Объявим функцию отмены стандартного поведения
-    const handleFormSubmit = event => {
-      // У всех форм отменим стандартное поведение
-      event.preventDefault();
-    };
+  };
+  // Объявим функцию отмены стандартного поведения
+  const handleFormSubmit = event => {
+    // У всех форм отменим стандартное поведение
+    event.preventDefault();
+  };
   // Переберем полученный массив
   formList.forEach(formListIterator);
-}
+};
 
 enableValidation(settingObject);

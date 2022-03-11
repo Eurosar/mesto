@@ -1,5 +1,6 @@
 .profile__edit-name {
   display: flex;
+  align-items: baseline;
   min-width: 0;
   max-width: 550px;
 }

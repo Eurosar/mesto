@@ -38,6 +38,7 @@
     </section>
     <div class="popup popup-profile-editor">
       <div class="popup__container">
+        <div class="popup__overlay"></div>
         <form name="profile-editor" class="popup__form form-profile-editor" novalidate>
           <h2 class="popup__title">Редактировать профиль</h2>
           <button type="button" class="popup__close close-profile-editor"></button>
@@ -59,6 +60,7 @@
     </div>
     <div class="popup popup-add-places">
       <div class="popup__container">
+        <div class="popup__overlay"></div>
         <form name="add-places" class="popup__form form-add-places" novalidate>
           <h2 class="popup__title">Новое место</h2>
           <button type="button" class="popup__close close-add-places"></button>
@@ -80,6 +82,7 @@
     </div>
     <div class="popup popup-place-image">
       <div class="popup__container">
+        <div class="popup__overlay"></div>
         <div class="container-image">
           <button type="button" class="popup__close close-place-image"></button>
           <img src="#" alt="#" class="container-image__image">
@@ -89,7 +92,10 @@
     </div>
   </main>
   <footer class="footer">
-    &#169; 2020 Mesto Russia
+    <p class="footer__copyright">
+      &#169; 2020 Mesto Russia
+    </p>
+    
   </footer>
 </div>
 <script src="./scripts/constants.js"></script>
