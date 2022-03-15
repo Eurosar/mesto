@@ -107,16 +107,19 @@ const unlockButtonStateByOpenPopup = (object) => {
   });
 };
 
-//Присвоение класса для открытия popup
-function openPopup(popup) {
-  const handleCloseEscPopup = (event) => {
-    const key = event.key;
+// Закрываем модальное окно по нажатию на Esc, и блокируем кнопку сохранения
+const handleCloseEscPopup = (event) => {
+  const key = event.key;
     if (key === 'Escape') {
-      blockButtonStateByOpenPopup(settingObject);
+      const popup = document.querySelector('.popup_opened');
       closePopup(popup);
+      blockButtonStateByOpenPopup(settingObject);
 
     }
-  }
+}
+
+//Присвоение класса для открытия popup
+function openPopup(popup) {
   document.addEventListener('keydown', handleCloseEscPopup);
   popup.classList.add('popup_opened');
   
@@ -125,14 +128,6 @@ function openPopup(popup) {
 
 //Удаление класса для закрытия popup
 function closePopup(popup) {
-  const handleCloseEscPopup = (event) => {
-    const key = event.key;
-    if (key === 'Escape') {
-      blockButtonStateByOpenPopup(settingObject);
-      closePopup(popup);
-
-    }
-  }
   document.removeEventListener('keydown', handleCloseEscPopup);
   popup.classList.remove('popup_opened');
   
