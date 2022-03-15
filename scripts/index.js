@@ -1,28 +1,3 @@
-const popupProfileEditor = document.querySelector('.popup-profile-editor');
-const profileEditButton = document.querySelector('.profile__edit-button');
-const popupAddPlaces = document.querySelector('.popup-add-places');
-const profileAddButton = document.querySelector('.profile__add-button');
-const popupPlaceImage = document.querySelector('.popup-place-image');
-const popupCloseProfileEditor = document.querySelector('.close-profile-editor');
-const popupCloseAddPlaces = document.querySelector('.close-add-places');
-const popupClosePlaceImage = document.querySelector('.close-place-image');
-const formProfileEditElement = document.querySelector('.form-profile-editor');
-const formProfileAddElement = document.querySelector('.form-add-places');
-const placesList = document.querySelector('.places__list');
-const templatePlace = document.querySelector('.place-template');
-const popupContainerImage = document.querySelector('.container-image__image');
-const popupContainerTitle = document.querySelector('.container-image__image-title');
-
-//Обработчик данных input в popup edit
-const nameInput = formProfileEditElement.querySelector('.popup__input_text_name');
-const jobInput = formProfileEditElement.querySelector('.popup__input_text_job');
-const nameProfile = document.querySelector('.profile__name');
-const jobProfile = document.querySelector('.profile__job');
-
-//Обработчик данных input в popup add place
-const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');
-const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_image-link');
-
 // Присвоение input значений из блока profile
 function assignInputsValue() {
   nameInput.value = nameProfile.textContent;
@@ -43,10 +18,10 @@ function createPlaceElement(item) {
   placeElement.querySelector('.place__title').textContent = item.name;
   placeImage.src = item.link;
   placeImage.alt = item.name;
-  placeElement.querySelector('.place__favorite').addEventListener('click', handlerLikePlace);
-  placeElement.querySelector('.place__cart').addEventListener('click', handlerRemovePlace);
+  placeElement.querySelector('.place__favorite').addEventListener('click', handleLikePlace);
+  placeElement.querySelector('.place__cart').addEventListener('click', handleRemovePlace);
   placeImage.addEventListener('click', () => {
-    handlerClickImageOpen(item.link, item.name);
+    handleClickImageOpen(item.link, item.name);
   });
 
   return placeElement;
@@ -54,7 +29,7 @@ function createPlaceElement(item) {
 }
 
 //--Открытие Image
-function handlerClickImageOpen(src, alt) {
+function handleClickImageOpen(src, alt) {
   popupContainerImage.src = src;
   popupContainerImage.alt = alt;
   popupContainerTitle.textContent = alt;
@@ -63,13 +38,13 @@ function handlerClickImageOpen(src, alt) {
 }
 
 // Like фотографии
-function handlerLikePlace(event) {
+function handleLikePlace(event) {
   const placeElement = event.target.closest('.place__favorite');
   placeElement.classList.toggle('place__favorite_active');
 }
 
 // Удаляем карточки Place со страницы по нажатию на корзину
-function handlerRemovePlace(event) {
+function handleRemovePlace(event) {
   const placeElement = event.target.closest('.place');
   placeElement.remove();
 }
@@ -97,34 +72,79 @@ function assignContentPlaceInputs() {
 }
 
 // Выводим новую карточку в блоке Places
-function handlerSubmitFormAddPlaces(e) {
+function handleSubmitFormAddPlaces(e) {
   e.preventDefault();
   assignContentPlaceInputs();
   closePopup(popupAddPlaces);
+  blockButtonStateByOpenPopup(settingObject);
 }
 
 // сохраняем данные Profile на странице
-function handlerSubmitFormProfileEdit(evt) {
+function handleSubmitFormProfileEdit(evt) {
   evt.preventDefault();
   assignTextContentFromInputs();
   closePopup(popupProfileEditor);
+  blockButtonStateByOpenPopup(settingObject);
 }
+
+// блокируем кнопку отправки при открытии модального окна
+const blockButtonStateByOpenPopup = (object) => {
+  const buttonList = document.querySelectorAll(object.submitButtonSelector);
+  buttonList.forEach((buttonElement) => {
+  buttonElement.classList.add(object.inactiveButtonClass);
+  buttonElement.setAttribute('disabled', 'true');
+
+  });
+};
+
+// разблокируем кнопку отправки при открытии модального окна
+const unlockButtonStateByOpenPopup = (object) => {
+  const buttonList = document.querySelectorAll(object.submitButtonSelector);
+  buttonList.forEach((buttonElement) => {
+    buttonElement.classList.remove(object.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled');
+
+  });
+};
 
 //Присвоение класса для открытия popup
 function openPopup(popup) {
+  const handleCloseEscPopup = (event) => {
+    const key = event.key;
+    if (key === 'Escape') {
+      blockButtonStateByOpenPopup(settingObject);
+      closePopup(popup);
+
+    }
+  }
+  document.addEventListener('keydown', handleCloseEscPopup);
   popup.classList.add('popup_opened');
+  
+
 }
 
 //Удаление класса для закрытия popup
 function closePopup(popup) {
+  const handleCloseEscPopup = (event) => {
+    const key = event.key;
+    if (key === 'Escape') {
+      blockButtonStateByOpenPopup(settingObject);
+      closePopup(popup);
+
+    }
+  }
+  document.removeEventListener('keydown', handleCloseEscPopup);
   popup.classList.remove('popup_opened');
+  
 }
 
 //Закрытие popups
 
 //--Закрытие Profile
 popupCloseProfileEditor.addEventListener('click', () => {
+  blockButtonStateByOpenPopup(settingObject);
   closePopup(popupProfileEditor);
+  
 });
 
 //--Закрытие Place
@@ -141,46 +161,35 @@ popupClosePlaceImage.addEventListener('click', () => {
 //--Открытие Profile
 profileEditButton.addEventListener('click', () => {
   assignInputsValue();
+  unlockButtonStateByOpenPopup(settingObject);
   openPopup(popupProfileEditor);
-  enableValidation(settingObject);
 });
 
 //--Открытие Place
 profileAddButton.addEventListener('click', () => {
-  formProfileAddElement.reset(); // Очищаем inputs в handlerSubmitFormAddPlaces
+  formProfileAddElement.reset(); // Очищаем inputs в handleSubmitFormAddPlaces
   openPopup(popupAddPlaces);
-  enableValidation(settingObject);
 });
 
 // жмем кнопку сохранить данные в popups
-formProfileEditElement.addEventListener('submit', handlerSubmitFormProfileEdit);
-formProfileAddElement.addEventListener('submit', handlerSubmitFormAddPlaces);
+formProfileEditElement.addEventListener('submit', handleSubmitFormProfileEdit);
+formProfileAddElement.addEventListener('submit', handleSubmitFormAddPlaces);
 
 
 // функция закрытия popup по клику на оверлей
 const setEventListenersPopups = () => {
-  // находим все popups и создаем из них массив
-  const popupList = Array.from(document.querySelectorAll('.popup'));
 
   const popupListIterator = (popupElement) => {
 
-    const handlerCloseOverlayPopup = (event) => {
+    const handleCloseOverlayPopup = (event) => {
       // если нажимаем на подложку, то popup закроется
       if (event.target.classList.contains('popup__overlay')) {
         closePopup(popupElement);
       }
     };
-    // Объявим функцию закрытия popup клавишей Esc
-    const handlerCloseEscPopup = (event) => {
-      if (popupElement.classList.contains('popup_opened')) {
-        if (event.key === 'Escape') {
-          closePopup(popupElement);
-        }
-      }
-    };
+
     // вешаем слушателя на каждый popup
-    popupElement.addEventListener('click', handlerCloseOverlayPopup);
-    document.addEventListener('keydown', handlerCloseEscPopup);
+    popupElement.addEventListener('click', handleCloseOverlayPopup);
   };
   // перебираем массив popups
   popupList.forEach(popupListIterator);
