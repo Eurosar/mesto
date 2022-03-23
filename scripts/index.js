@@ -1,3 +1,68 @@
+//Создаем класс карточки
+class Card {
+  constructor(data, cardSelector) {
+    this._title = data.name;
+    this._image = data.link;
+    this._cardSelector = cardSelector;
+  }
+
+  _getTemplate() {
+   const cardElement = document
+     .querySelector(this._cardSelector)
+     .content.querySelector('.place')
+     .cloneNode(true);
+
+    return cardElement;
+  }
+
+  _handleLikePlace() {
+    this._element.querySelector('.place__favorite').classList.toggle('place__favorite_active');
+  }
+
+  _handleRemovePlace() {
+    this._element.remove();
+  }
+
+  _handleClickImageOpen() {
+    popupContainerImage.src = this._image;
+    popupContainerImage.alt = this._title;
+    popupContainerTitle.textContent = this._title;
+    openPopup(popupPlaceImage);
+  }
+  _setEventListeners() {
+    this._element.querySelector('.place__favorite').addEventListener('click', () => {
+      this._handleLikePlace();
+    });
+    this._element.querySelector('.place__cart').addEventListener('click', () => {
+      this._handleRemovePlace();
+    });
+    this._element.querySelector('.place__image').addEventListener('click', () => {
+      this._handleClickImageOpen();
+    });
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+    this._setEventListeners();
+    this._element.querySelector('.place__title').textContent = this._title;
+    this._element.querySelector('.place__image').src = this._image;
+    this._element.querySelector('.place__image').alt = this._title;
+
+    return this._element;
+  }
+
+}
+
+
+
+initialCards.forEach((item) => {
+  const card = new Card(item, '.place-template');
+
+  const cardElement = card.generateCard();
+
+  document.querySelector('.places__list').append(cardElement);
+});
+
 // Присвоение input значений из блока profile
 function assignInputsValue() {
   nameInput.value = nameProfile.textContent;
