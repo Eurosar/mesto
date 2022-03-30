@@ -1,67 +1,21 @@
-//Создаем класс карточки
-class Card {
-  constructor(data, cardSelector) {
-    this._title = data.name;
-    this._image = data.link;
-    this._cardSelector = cardSelector;
-  }
+import {Card} from './Card.js';
+import {FormValidator} from './FormValidator.js';
 
-  _getTemplate() {
-   const cardElement = document
-     .querySelector(this._cardSelector)
-     .content.querySelector('.place')
-     .cloneNode(true);
-
-    return cardElement;
-  }
-
-  _handleLikePlace() {
-    this._element.querySelector('.place__favorite').classList.toggle('place__favorite_active');
-  }
-
-  _handleRemovePlace() {
-    this._element.remove();
-  }
-
-  _handleClickImageOpen() {
-    popupContainerImage.src = this._image;
-    popupContainerImage.alt = this._title;
-    popupContainerTitle.textContent = this._title;
-    openPopup(popupPlaceImage);
-  }
-  _setEventListeners() {
-    this._element.querySelector('.place__favorite').addEventListener('click', () => {
-      this._handleLikePlace();
-    });
-    this._element.querySelector('.place__cart').addEventListener('click', () => {
-      this._handleRemovePlace();
-    });
-    this._element.querySelector('.place__image').addEventListener('click', () => {
-      this._handleClickImageOpen();
-    });
-  }
-
-  generateCard() {
-    this._element = this._getTemplate();
-    this._setEventListeners();
-    this._element.querySelector('.place__title').textContent = this._title;
-    this._element.querySelector('.place__image').src = this._image;
-    this._element.querySelector('.place__image').alt = this._title;
-
-    return this._element;
-  }
-
-}
-
-
-
+// Переберем массив карточек и выведем их на странице
 initialCards.forEach((item) => {
   const card = new Card(item, '.place-template');
-
   const cardElement = card.generateCard();
-
   document.querySelector('.places__list').append(cardElement);
 });
+
+// Выведем валидность модального окна редактирования профиля
+const formValidatorProfile = new FormValidator(settingObject, 'form-profile-editor');
+formValidatorProfile.enableValidation();
+
+// Выведем валидность модального окна добавления мест
+const formValidatorAddPlace = new FormValidator(settingObject, 'form-add-places');
+formValidatorAddPlace.enableValidation();
+
 
 // Присвоение input значений из блока profile
 function assignInputsValue() {
@@ -75,64 +29,15 @@ function assignTextContentFromInputs() {
   jobProfile.textContent = jobInput.value;
 }
 
-function createPlaceElement(item) {
-  // Клонируем шаблон
-  const placeElement = templatePlace.content.cloneNode(true);
-  const placeImage = placeElement.querySelector('.place__image');
-
-  placeElement.querySelector('.place__title').textContent = item.name;
-  placeImage.src = item.link;
-  placeImage.alt = item.name;
-  placeElement.querySelector('.place__favorite').addEventListener('click', handleLikePlace);
-  placeElement.querySelector('.place__cart').addEventListener('click', handleRemovePlace);
-  placeImage.addEventListener('click', () => {
-    handleClickImageOpen(item.link, item.name);
-  });
-
-  return placeElement;
-
-}
-
-//--Открытие Image
-function handleClickImageOpen(src, alt) {
-  popupContainerImage.src = src;
-  popupContainerImage.alt = alt;
-  popupContainerTitle.textContent = alt;
-  openPopup(popupPlaceImage);
-
-}
-
-// Like фотографии
-function handleLikePlace(event) {
-  const placeElement = event.target.closest('.place__favorite');
-  placeElement.classList.toggle('place__favorite_active');
-}
-
-// Удаляем карточки Place со страницы по нажатию на корзину
-function handleRemovePlace(event) {
-  const placeElement = event.target.closest('.place');
-  placeElement.remove();
-}
-
-// Перебираем массив карточек и выводим их на странице
-function outputAnArrayOfCards() {
-  initialCards.forEach((item) => {
-    const arrayPlaceElement = createPlaceElement(item);
-    placesList.append(arrayPlaceElement);
-  });
-
-}
-
-outputAnArrayOfCards();
-
 // Присваиваем textContent и src из input в блок Place
 function assignContentPlaceInputs() {
   const item = {
     name: namePlaceInput.value,
     link: imageLinkInput.value
   };
-  const placeCard = createPlaceElement(item);
-  placesList.prepend(placeCard);
+  const card = new Card(item, '.place-template');
+  const cardElement = card.generateCard();
+  placesList.prepend(cardElement);
 
 }
 
@@ -184,7 +89,7 @@ const handleCloseEscPopup = (event) => {
 }
 
 //Присвоение класса для открытия popup
-function openPopup(popup) {
+export function openPopup(popup) {
   document.addEventListener('keydown', handleCloseEscPopup);
   popup.classList.add('popup_opened');
   

@@ -9,7 +9,6 @@ const popupClosePlaceImage = document.querySelector('.close-place-image');
 const formProfileEditElement = document.querySelector('.form-profile-editor');
 const formProfileAddElement = document.querySelector('.form-add-places');
 const placesList = document.querySelector('.places__list');
-const templatePlace = document.querySelector('.place-template');
 const popupContainerImage = document.querySelector('.container-image__image');
 const popupContainerTitle = document.querySelector('.container-image__image-title');
 
