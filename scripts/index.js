@@ -1,11 +1,16 @@
 import {Card} from './Card.js';
 import {FormValidator} from './FormValidator.js';
 
-// Переберем массив карточек и выведем их на странице
-initialCards.forEach((item) => {
+
+const outputPlaceCard = item => {
   const card = new Card(item, '.place-template');
   const cardElement = card.generateCard();
-  document.querySelector('.places__list').append(cardElement);
+  return cardElement;
+};
+// Переберем массив карточек и выведем их на странице
+initialCards.forEach((item) => {
+  const placesList = document.querySelector('.places__list');
+  placesList.append(outputPlaceCard(item));
 });
 
 // Выведем валидность модального окна редактирования профиля
@@ -35,9 +40,7 @@ function assignContentPlaceInputs() {
     name: namePlaceInput.value,
     link: imageLinkInput.value
   };
-  const card = new Card(item, '.place-template');
-  const cardElement = card.generateCard();
-  placesList.prepend(cardElement);
+  placesList.prepend(outputPlaceCard(item));
 
 }
 
@@ -46,7 +49,6 @@ function handleSubmitFormAddPlaces(e) {
   e.preventDefault();
   assignContentPlaceInputs();
   closePopup(popupAddPlaces);
-  blockButtonStateByOpenPopup(settingObject);
 }
 
 // сохраняем данные Profile на странице
@@ -54,28 +56,8 @@ function handleSubmitFormProfileEdit(evt) {
   evt.preventDefault();
   assignTextContentFromInputs();
   closePopup(popupProfileEditor);
-  blockButtonStateByOpenPopup(settingObject);
+  formValidatorProfile.toggleButtonState();
 }
-
-// блокируем кнопку отправки при открытии модального окна
-const blockButtonStateByOpenPopup = (object) => {
-  const buttonList = document.querySelectorAll(object.submitButtonSelector);
-  buttonList.forEach((buttonElement) => {
-  buttonElement.classList.add(object.inactiveButtonClass);
-  buttonElement.setAttribute('disabled', 'true');
-
-  });
-};
-
-// разблокируем кнопку отправки при открытии модального окна
-const unlockButtonStateByOpenPopup = (object) => {
-  const buttonList = document.querySelectorAll(object.submitButtonSelector);
-  buttonList.forEach((buttonElement) => {
-    buttonElement.classList.remove(object.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled');
-
-  });
-};
 
 // Закрываем модальное окно по нажатию на Esc, и блокируем кнопку сохранения
 const handleCloseEscPopup = (event) => {
@@ -83,7 +65,6 @@ const handleCloseEscPopup = (event) => {
     if (key === 'Escape') {
       const popup = document.querySelector('.popup_opened');
       closePopup(popup);
-      blockButtonStateByOpenPopup(settingObject);
 
     }
 }
@@ -103,19 +84,6 @@ function closePopup(popup) {
   
 }
 
-//Закрытие popups
-
-//--Закрытие Profile
-popupCloseProfileEditor.addEventListener('click', () => {
-  blockButtonStateByOpenPopup(settingObject);
-  closePopup(popupProfileEditor);
-  
-});
-
-//--Закрытие Place
-popupCloseAddPlaces.addEventListener('click', () => {
-  closePopup(popupAddPlaces);
-});
 
 //--Закрытие Image
 popupClosePlaceImage.addEventListener('click', () => {
@@ -123,16 +91,29 @@ popupClosePlaceImage.addEventListener('click', () => {
 });
 
 //Открытие popups
+
+// Функция для сброса ошибок при повторном открытии окна
+const resetInputError = (object, form, formValidator) => {
+  const inputList = Array.from(form.querySelectorAll(object.inputSelector));
+  const inputListIterator = inputElement => {
+    formValidator.hideInputError(inputElement);
+  }
+  inputList.forEach(inputListIterator);
+}
 //--Открытие Profile
 profileEditButton.addEventListener('click', () => {
   assignInputsValue();
-  unlockButtonStateByOpenPopup(settingObject);
+  resetInputError(settingObject, formProfileEditElement, formValidatorProfile);
+  formValidatorProfile.toggleButtonState();
   openPopup(popupProfileEditor);
 });
 
 //--Открытие Place
 profileAddButton.addEventListener('click', () => {
+
   formProfileAddElement.reset(); // Очищаем inputs в handleSubmitFormAddPlaces
+  resetInputError(settingObject, formProfileAddElement, formValidatorAddPlace);
+  formValidatorAddPlace.toggleButtonState();
   openPopup(popupAddPlaces);
 });
 
@@ -146,15 +127,15 @@ const setEventListenersPopups = () => {
 
   const popupListIterator = (popupElement) => {
 
-    const handleCloseOverlayPopup = (event) => {
+    const handleClosePopup = (event) => {
       // если нажимаем на подложку, то popup закроется
-      if (event.target.classList.contains('popup__overlay')) {
+      if (event.target.classList.contains('popup__overlay') || event.target.classList.contains('popup__close')) {
         closePopup(popupElement);
       }
     };
 
     // вешаем слушателя на каждый popup
-    popupElement.addEventListener('click', handleCloseOverlayPopup);
+    popupElement.addEventListener('click', handleClosePopup);
   };
   // перебираем массив popups
   popupList.forEach(popupListIterator);

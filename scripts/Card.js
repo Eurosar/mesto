@@ -18,7 +18,7 @@ export class Card {
 
   // Like фотографии
   _handleLikePlace() {
-    this._element.querySelector('.place__favorite').classList.toggle('place__favorite_active');
+    this._likeButton.classList.toggle('place__favorite_active');
   }
 
   // Удаляем карточки Place со страницы по нажатию на корзину
@@ -36,8 +36,8 @@ export class Card {
 
   // Создадим функцию, которая объединит все слушатели карточки
   _setEventListeners() {
-    this._element.querySelector('.place__favorite').addEventListener('click', () => {
-      this._handleLikePlace();
+    this._likeButton.addEventListener('click', (evt) => {
+      this._handleLikePlace(evt);
     });
     this._element.querySelector('.place__cart').addEventListener('click', () => {
       this._handleRemovePlace();
@@ -50,6 +50,7 @@ export class Card {
   // Создадим функцию готовой карточки
   generateCard() {
     this._element = this._getTemplate();
+    this._likeButton = this._element.querySelector('.place__favorite');
     this._setEventListeners();
     this._element.querySelector('.place__title').textContent = this._title;
     this._element.querySelector('.place__image').src = this._image;
