@@ -1,20 +1,21 @@
-const popupProfileEditor = document.querySelector('.popup-profile-editor');
+const popupProfileEditor = '.popup-profile-editor';
 const profileEditButton = document.querySelector('.profile__edit-button');
-const popupAddPlaces = document.querySelector('.popup-add-places');
+const popupAddPlaces = '.popup-add-places';
 const profileAddButton = document.querySelector('.profile__add-button');
-const popupPlaceImage = document.querySelector('.popup-place-image');
+const popupPlaceImage = '.popup-place-image';
 const popupClosePlaceImage = document.querySelector('.close-place-image');
 const formProfileEditElement = document.querySelector('.form-profile-editor');
 const formProfileAddElement = document.querySelector('.form-add-places');
-const placesList = document.querySelector('.places__list');
+const placesList = '.places__list';
+const popupForm = '.popup__form';
 const popupContainerImage = document.querySelector('.container-image__image');
 const popupContainerTitle = document.querySelector('.container-image__image-title');
 
 //Обработчик данных input в popup edit
 const nameInput = formProfileEditElement.querySelector('.popup__input_text_name');
 const jobInput = formProfileEditElement.querySelector('.popup__input_text_job');
-const nameProfile = document.querySelector('.profile__name');
-const jobProfile = document.querySelector('.profile__job');
+const nameProfile = '.profile__name';
+const jobProfile = '.profile__job';
 
 //Обработчик данных input в popup add place
 const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');

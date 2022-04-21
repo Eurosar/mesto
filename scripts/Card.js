@@ -1,10 +1,9 @@
-import {openPopup} from './index.js';
-
 //Создаем класс карточки
 export class Card {
-  constructor(data, cardSelector) {
-    this._title = data.name;
-    this._image = data.link;
+  constructor({name, link, handleCardClick}, cardSelector) {
+    this._title = name;
+    this._image = link;
+    this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
   }
 
@@ -43,7 +42,7 @@ export class Card {
       this._handleRemovePlace();
     });
     this._element.querySelector('.place__image').addEventListener('click', () => {
-      this._handleClickImageOpen();
+      this._handleCardClick();
     });
   }
 
