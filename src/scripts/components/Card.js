@@ -1,5 +1,5 @@
 //Создаем класс карточки
-export class Card {
+export default class Card {
   constructor({name, link, handleCardClick}, cardSelector) {
     this._title = name;
     this._image = link;
@@ -23,14 +23,6 @@ export class Card {
   // Удаляем карточки Place со страницы по нажатию на корзину
   _handleRemovePlace() {
     this._element.remove();
-  }
-
-  // Открываем картинку в модальном окне
-  _handleClickImageOpen() {
-    popupContainerImage.src = this._image;
-    popupContainerImage.alt = this._title;
-    popupContainerTitle.textContent = this._title;
-    openPopup(popupPlaceImage);
   }
 
   // Создадим функцию, которая объединит все слушатели карточки
