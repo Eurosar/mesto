@@ -7,20 +7,14 @@ export default class FormValidator {
     this._errorClass = object.errorClass;
     this._inactiveButtonClass = object.inactiveButtonClass;
     this._formElement = formElement;
-    // this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    // this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
-  }
-
-  // Получим форму
-  _getFormElement() {
-    const formElement = document.querySelector(this._formElement);
-    return formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
   }
 
   // Получим поле с ошибкой в DOM
   _getErrorElement(inputElement) {
 
-    const errorElement = this._element.querySelector(`.${inputElement.id}-error`);
+    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
     return errorElement;
 
   }
@@ -34,7 +28,7 @@ export default class FormValidator {
   }
 
   // Скроем предупреждение об ошибке
-  hideInputError(inputElement) {
+  _hideInputError(inputElement) {
     const errorElement = this._getErrorElement(inputElement);
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
@@ -47,7 +41,7 @@ export default class FormValidator {
     if (isInputNotValid) {
       this._showInputError(inputElement, inputElement.validationMessage);
     } else {
-      this.hideInputError(inputElement);
+      this._hideInputError(inputElement);
     }
   }
 
@@ -86,7 +80,7 @@ export default class FormValidator {
   }
 
   resetError() {
-    const inputListIterator = inputElement => {this.hideInputError(inputElement)}
+    const inputListIterator = inputElement => {this._hideInputError(inputElement)}
     this._inputList.forEach(inputListIterator);
 
   }
@@ -107,12 +101,6 @@ export default class FormValidator {
   }
 
   enableValidation() {
-    this._element = this._getFormElement();
-    this._inputList = Array.from(this._element.querySelectorAll(this._inputSelector));
-    this._buttonElement = this._element.querySelector(this._submitButtonSelector);
-    console.log(this._element);
-    console.log(this._inputList);
-    console.log(this._buttonElement);
     this._setEventListeners();
   }
 }

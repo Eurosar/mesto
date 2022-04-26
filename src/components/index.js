@@ -10,6 +10,8 @@ import {
   profileAddButton,
   popupPlaceImageSelector,
   placesListSelector,
+  formProfileEditElement,
+  formProfileAddElement,
   nameInput,
   jobInput,
   nameProfile,
@@ -102,9 +104,9 @@ const userInfo = new UserInfo({
 });
 
 // Выведем валидность модального окна редактирования профиля
-const formValidatorProfile = new FormValidator(settingObject, '.form-profile-editor');
+const formValidatorProfile = new FormValidator(settingObject, formProfileEditElement);
 formValidatorProfile.enableValidation();
 
 // Выведем валидность модального окна добавления мест
-const formValidatorAddPlace = new FormValidator(settingObject, '.form-add-places');
+const formValidatorAddPlace = new FormValidator(settingObject, formProfileAddElement);
 formValidatorAddPlace.enableValidation();
