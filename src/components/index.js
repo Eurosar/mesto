@@ -1,17 +1,15 @@
-// Импорт картинок, включенных в html для webpack
+// Импорт картинок, включенных в html webpack
 
 
-// Импорт файлов для webpack
+// Импорт файлов webpack
 import '../pages/index.css';
 import {
-  popupProfileEditor,
-  popupAddPlaces,
+  popupProfileEditorSelector,
+  popupAddPlacesSelector,
   profileEditButton,
   profileAddButton,
-  popupPlaceImage,
-  formProfileEditElement,
-  formProfileAddElement,
-  placesList,
+  popupPlaceImageSelector,
+  placesListSelector,
   nameInput,
   jobInput,
   nameProfile,
@@ -48,16 +46,16 @@ const defaultPlacesList = new Section({
   renderer: (item) => {
     defaultPlacesList.addItem(outputPlaceCard(item));
   }
-}, placesList);
+}, placesListSelector);
 
 defaultPlacesList.renderItems();
 
 // Создаем модальное окно для картинок
-const popupImagePlaces = new PopupWithImage(popupPlaceImage);
+const popupImagePlaces = new PopupWithImage(popupPlaceImageSelector);
 
 // Создаем модальное окно данных user
 const popupProfile = new PopupWithForm({
-  popupSelector: popupProfileEditor,
+  popupSelector: popupProfileEditorSelector,
   handleSubmitForm: (formData) => {
     userInfo.setUserInfo(formData);
   },
@@ -66,34 +64,21 @@ const popupProfile = new PopupWithForm({
     nameInput.value = userData.name;
     jobInput.value = userData.job;
     formValidatorProfile.toggleButtonState();
-  },
-  resetInputError: () => {
-    const inputList = Array.from(formProfileEditElement.querySelectorAll(settingObject.inputSelector));
-    const inputListIterator = inputElement => {
-      formValidatorProfile.hideInputError(inputElement);
-    }
-    inputList.forEach(inputListIterator);
+    formValidatorProfile.resetError();
   }
 });
 
 //Создаем модальное окно добавления новых карточек
 const popupPlace = new PopupWithForm({
-  popupSelector: popupAddPlaces,
+  popupSelector: popupAddPlacesSelector,
   handleSubmitForm: ({name, link}) => {
     name = namePlaceInput.value;
     link = imageLinkInput.value;
-    const placesList = document.querySelector('.places__list');
-    placesList.prepend(outputPlaceCard({name, link}));
+    defaultPlacesList.addItem(outputPlaceCard({name, link}));
   },
   checkInputsValue: () => {
     formValidatorAddPlace.toggleButtonState();
-  },
-  resetInputError: () => {
-    const inputList = Array.from(formProfileAddElement.querySelectorAll(settingObject.inputSelector));
-    const inputListIterator = inputElement => {
-      formValidatorAddPlace.hideInputError(inputElement);
-    }
-    inputList.forEach(inputListIterator);
+    formValidatorAddPlace.resetError();
   }
 });
 
@@ -117,9 +102,9 @@ const userInfo = new UserInfo({
 });
 
 // Выведем валидность модального окна редактирования профиля
-const formValidatorProfile = new FormValidator(settingObject, 'form-profile-editor');
+const formValidatorProfile = new FormValidator(settingObject, '.form-profile-editor');
 formValidatorProfile.enableValidation();
 
 // Выведем валидность модального окна добавления мест
-const formValidatorAddPlace = new FormValidator(settingObject, 'form-add-places');
+const formValidatorAddPlace = new FormValidator(settingObject, '.form-add-places');
 formValidatorAddPlace.enableValidation();

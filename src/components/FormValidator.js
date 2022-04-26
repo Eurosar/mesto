@@ -7,11 +7,13 @@ export default class FormValidator {
     this._errorClass = object.errorClass;
     this._inactiveButtonClass = object.inactiveButtonClass;
     this._formElement = formElement;
+    // this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    // this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
   }
 
   // Получим форму
   _getFormElement() {
-    const formElement = document.querySelector(`.${this._formElement}`);
+    const formElement = document.querySelector(this._formElement);
     return formElement;
   }
 
@@ -83,6 +85,12 @@ export default class FormValidator {
     this.toggleButtonState();
   }
 
+  resetError() {
+    const inputListIterator = inputElement => {this.hideInputError(inputElement)}
+    this._inputList.forEach(inputListIterator);
+
+  }
+
 // Функция слушателя inputs
   _setEventListeners() {
     const inputListIterator = inputElement => {
@@ -102,6 +110,9 @@ export default class FormValidator {
     this._element = this._getFormElement();
     this._inputList = Array.from(this._element.querySelectorAll(this._inputSelector));
     this._buttonElement = this._element.querySelector(this._submitButtonSelector);
+    console.log(this._element);
+    console.log(this._inputList);
+    console.log(this._buttonElement);
     this._setEventListeners();
   }
 }

@@ -1,12 +1,11 @@
-import { popupForm } from '../utils/constants.js';
+import { popupFormSelector } from '../utils/constants.js';
 import Popup from './Popup.js';
 
 export default class PopupWithForm extends Popup {
-  constructor({ popupSelector, handleSubmitForm, checkInputsValue, resetInputError }) {
+  constructor({ popupSelector, handleSubmitForm, checkInputsValue }) {
     super(popupSelector);
     this._handleSubmitForm = handleSubmitForm;
     this._checkInputsValue = checkInputsValue;
-    this._resetInputError = resetInputError;
   }
 
   _getInputValues() {
@@ -26,7 +25,6 @@ export default class PopupWithForm extends Popup {
   open() {
     super.open();
     this._checkInputsValue();
-    this._resetInputError();
   }
 
   close() {
@@ -36,7 +34,7 @@ export default class PopupWithForm extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
-    this._form = this._popupSelector.querySelector(popupForm);
+    this._form = this._popupSelector.querySelector(popupFormSelector);
     this._form.addEventListener('submit', (event) => {
       event.preventDefault();
       this._handleSubmitForm(this._getInputValues());

@@ -5,6 +5,7 @@ export default class Card {
     this._image = link;
     this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
+
   }
 
   // Получаем клон шаблона карточки
@@ -23,6 +24,7 @@ export default class Card {
   // Удаляем карточки Place со страницы по нажатию на корзину
   _handleRemovePlace() {
     this._element.remove();
+    this._element = null;
   }
 
   // Создадим функцию, которая объединит все слушатели карточки
@@ -42,11 +44,11 @@ export default class Card {
   generateCard() {
     this._element = this._getTemplate();
     this._likeButton = this._element.querySelector('.place__favorite');
+    this._imageData = this._element.querySelector('.place__image');
     this._setEventListeners();
     this._element.querySelector('.place__title').textContent = this._title;
-    this._element.querySelector('.place__image').src = this._image;
-    this._element.querySelector('.place__image').alt = this._title;
-
+    this._imageData.src = this._image;
+    this._imageData.alt = this._title;
     return this._element;
   }
 }

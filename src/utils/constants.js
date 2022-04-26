@@ -1,12 +1,12 @@
-export const popupProfileEditor = '.popup-profile-editor';
-export const popupAddPlaces = '.popup-add-places';
+export const popupProfileEditorSelector = '.popup-profile-editor';
+export const popupAddPlacesSelector = '.popup-add-places';
 export const profileEditButton = document.querySelector('.profile__edit-button');
 export const profileAddButton = document.querySelector('.profile__add-button');
-export const popupPlaceImage = '.popup-place-image';
+export const popupPlaceImageSelector = '.popup-place-image';
 export const formProfileEditElement = document.querySelector('.form-profile-editor');
 export const formProfileAddElement = document.querySelector('.form-add-places');
-export const placesList = '.places__list';
-export const popupForm = '.popup__form';
+export const placesListSelector = '.places__list';
+export const popupFormSelector = '.popup__form';
 
 //Обработчик данных input в popup edit
 export const nameInput = formProfileEditElement.querySelector('.popup__input_text_name');
