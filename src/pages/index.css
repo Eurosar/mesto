@@ -18,8 +18,10 @@
 @import url(../blocks/place/__image/place__image.css);
 @import url(../blocks/place/__name/place__name.css);
 @import url(../blocks/place/__title/place__title.css);
+@import url(../blocks/place/__block-like/place__block-like.css);
 @import url(../blocks/place/__favorite/place__favorite.css);
 @import url(../blocks/place/__favorite/_active/place__favorite_active.css);
+@import url(../blocks/place/__like-counter/place__like-counter.css);
 @import url(../blocks/place/__cart/place__cart.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);

@@ -1,4 +1,5 @@
 .place__cart {
+  display: none;
   position: absolute;
   top: 20px;
   right: 20px;
@@ -13,6 +14,11 @@
   cursor: pointer;
   transition: opacity .3s;
 }
+
 .place__cart:hover {
   opacity: .6;
+}
+
+.place__cart-active {
+  display: block;
 }
