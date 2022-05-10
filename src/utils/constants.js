@@ -1,13 +1,24 @@
+// Находим попапы и их селекторы
 export const popupProfileEditorSelector = '.popup-profile-editor';
 export const popupAddPlacesSelector = '.popup-add-places';
 export const popupConfirmationSelector = '.popup-confirmation';
-export const profileEditButton = document.querySelector('.profile__edit-button');
-export const profileAddButton = document.querySelector('.profile__add-button');
 export const popupPlaceImageSelector = '.popup-place-image';
+export const popupUpdateAvatar = '.popup-update-avatar';
+
+// Находим формы и их элементы
+export const popupFormSelector = '.popup__form';
 export const formProfileEditElement = document.querySelector('.form-profile-editor');
 export const formProfileAddElement = document.querySelector('.form-add-places');
+export const formProfileUpdateElement = document.querySelector('.form-update-avatar');
+
+//Находим кнопки
+export const profileEditButton = document.querySelector('.profile__edit-button');
+export const profileAddButton = document.querySelector('.profile__add-button');
+export const profileEditAvatar = document.querySelector('.profile__avatar');
+
+//Селектор списка карточек
 export const placesListSelector = '.places__list';
-export const popupFormSelector = '.popup__form';
+
 
 //Обработчик данных input в popup edit
 export const nameInput = formProfileEditElement.querySelector('.popup__input_text_name');
@@ -20,6 +31,8 @@ export const avatarProfileSelector = '.profile__image';
 export const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');
 export const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_image-link');
 
+//Обработчик данных input в popup avatar update
+export const avatarLink = formProfileUpdateElement.querySelector('.popup__input_text_avatar-link');
 
 //Массив карточек мест из коробки
 // export const initialCards = [

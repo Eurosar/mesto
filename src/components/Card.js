@@ -1,16 +1,17 @@
 import {api} from './index.js';
-import PopupWithForm from "./PopupWithForm";
-import {popupConfirmationSelector} from "../utils/constants";
+// import PopupWithForm from "./PopupWithForm";
+// import {popupConfirmationSelector} from "../utils/constants";
 
 //Создаем класс карточки
 export default class Card {
-  constructor({name, link, likes, _id, owner, userInfo, handleCardClick}, cardSelector) {
+  constructor({name, link, likes, _id, owner, userInfo, handleCardClick, handleTrashClick}, cardSelector) {
     this._title = name;
     this._image = link;
     this._likes = likes;
     this._id = _id;
     this._owner = owner;
     this._handleCardClick = handleCardClick;
+    this._handleTrashClick = handleTrashClick;
     this._cardSelector = cardSelector;
 
     this._userInfo = userInfo;
@@ -50,35 +51,17 @@ export default class Card {
     });
   }
 
-  // удаляем
-  openPopupTrash() {
+  // нажимаем по мусорной корзине
+  _openPopupTrash() {
 
-    // готовим модальное окно
-    const popup = new PopupWithForm({
-      popupSelector: popupConfirmationSelector,
-      handleSubmitForm: () => {
-        api.deleteCard(this._id)
-          .then(() => {
-
-            this.handleRemovePlace();
-          })
-          // Выводим ошибку, если что-то пошло не так
-          .catch((err) => console.log(err));
-
-      },
-    });
-
-    // открываем
-    popup.open();
-
-    // слушаем
-    popup.setEventListeners();
+    // вызываем попап
+    this._handleTrashClick();
   }
 
   // Показываем корзину, если картинка своя
   _checkOwnerId() {
 
-    const userData = this._userInfo.getUserInfo()
+    const userData = this._userInfo.getUserInfo();
 
     // проверяем, совпадает ли наш айди юзера с айди автора
     if (userData._id === this._owner._id) {
@@ -100,14 +83,11 @@ export default class Card {
         this._likeButton.classList.add('place__favorite_active');
         this._setLike = true;
 
-        console.warn('лукас стоит на фото:', this._title);
-
-        // досрочно завершаем цикл
+        // досрочно завершаем for
         break;
       }
     }
   }
-
 
   // Удаляем карточки Place со страницы по нажатию на корзину
   handleRemovePlace() {
@@ -121,7 +101,7 @@ export default class Card {
       this._handleLikePlace(evt);
     });
     this._element.querySelector('.place__cart').addEventListener('click', () => {
-      this.openPopupTrash();
+      this._openPopupTrash();
     });
     this._element.querySelector('.place__image').addEventListener('click', () => {
       this._handleCardClick();

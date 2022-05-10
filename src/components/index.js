@@ -16,7 +16,12 @@ import {
   jobInput,
   namePlaceInput,
   imageLinkInput,
-  settingObject, nameProfileSelector, jobProfileSelector, avatarProfileSelector
+  settingObject,
+  nameProfileSelector,
+  jobProfileSelector,
+  avatarProfileSelector,
+  popupConfirmationSelector,
+  profileEditAvatar, popupUpdateAvatar, formProfileUpdateElement
 } from '../utils/constants.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
@@ -49,28 +54,59 @@ defaultPlacesList.renderItems();
 api.getProfileInfo()
   .then((data) => {
     userInfo.setUserInfo(data);
-})
+  })
 
   // Вызовем ошибку, если что-то пойдет не так
   .catch((err) => console.log(err));
 
+
+// готовим модальное окно
+const popupCardRemove = new PopupWithForm({
+  popupSelector: popupConfirmationSelector,
+
+  // будет отложенный коллбэк, прямо внизу карточки
+  // handleSubmitForm: () => {},
+});
+
+
 // Создаем карточку места
 const outputPlaceCard = item => {
+
   const card = new Card({
-      name: item.name,
-      link: item.link,
-      likes: item.likes,
-      owner: item.owner,
-      _id: item._id,
-      userInfo: userInfo,
-      handleCardClick: () => {
-        popupImagePlaces.open(item.name, item.link);
-      }
+    name: item.name,
+    link: item.link,
+    likes: item.likes,
+    owner: item.owner,
+    _id: item._id,
+    userInfo: userInfo,
+    handleCardClick: () => {
+      popupImagePlaces.open(item.name, item.link);
     },
-    '.place-template');
+
+    // нажимаем на корзину
+    handleTrashClick: () => {
+
+      // открываем окно, где спрашиваем, хочет ли удалить и жмем "Да"
+      popupCardRemove.open();
+
+      // установим коллбек который сработает при нажатии на "Да",
+      // то есть, мы переоформим в попапе функцию, которая назначается как this.__handleSubmitForm,
+      // чтобы добавить данные карточки, но при этом создать попап заранее
+      popupCardRemove._handleSubmitForm = () => {
+        api.deleteCard(item._id)
+          .then(()=> {
+
+            // вызовем удаление карточки
+            card.handleRemovePlace();
+          })
+          // Выводим ошибку, если что-то пошло не так
+          .catch((err) => console.error(err));
+      }
+    }
+  }, '.place-template');
+
   return card.generateCard();
 };
-
 
 
 // Создаем модальное окно для картинок
@@ -83,6 +119,7 @@ const popupProfile = new PopupWithForm({
   handleSubmitForm: (formData) => {
     api.changeUserInfo(formData)
       .then((data) => {
+        console.log(data);
         userInfo.setUserInfo(data);
       })
       // Выводим ошибку, если что-то пошло не так
@@ -124,18 +161,43 @@ const popupPlace = new PopupWithForm({
   }
 });
 
+// Создаем модальное окно обновления аватара
+
+const popupAvatar = new PopupWithForm({
+  popupSelector: popupUpdateAvatar,
+
+  handleSubmitForm: (formData) => {
+    console.log('formData', formData);
+    api.updateAvatar(formData)
+      .then((data) => {
+        console.log('data Avatar:', data);
+      })
+      .catch((err) => console.log(err));
+  },
+  checkInputsValue: () => {
+    formValidatorAvatar.toggleButtonState();
+    formValidatorAvatar.resetError();
+  }
+});
 
 // Вешаем слушатели модальных окон
 popupImagePlaces.setEventListeners();
 popupProfile.setEventListeners();
 popupPlace.setEventListeners();
+popupCardRemove.setEventListeners();
+popupAvatar.setEventListeners();
 
 // Вешаем слушатели на кнопки открытия модальных окон
 profileEditButton.addEventListener('click', () => {
   popupProfile.open();
 });
+
 profileAddButton.addEventListener('click', () => {
   popupPlace.open();
+});
+
+profileEditAvatar.addEventListener('click', () => {
+  popupAvatar.open();
 });
 
 // Создаем экземпляр класса, отвечающий за отображение информации о User
@@ -152,3 +214,8 @@ formValidatorProfile.enableValidation();
 // Выведем валидность модального окна добавления мест
 const formValidatorAddPlace = new FormValidator(settingObject, formProfileAddElement);
 formValidatorAddPlace.enableValidation();
+
+// Выведем валидность модального окна обновления аватара
+const formValidatorAvatar = new FormValidator(settingObject, formProfileUpdateElement);
+formValidatorAvatar.enableValidation();
+

@@ -36,13 +36,7 @@ export default class Api {
         about: data.job,
       })
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
+      .then(this._errorHandler);
   }
   postNewCard(data) {
     return fetch(this._baseUrl + 'cards', {
@@ -68,6 +62,17 @@ export default class Api {
     return fetch(this._baseUrl + 'cards/' + cardId + '/likes', {
       method: method,
       headers: this._headers,
+    })
+      .then(this._errorHandler);
+  }
+
+  updateAvatar(data) {
+    return fetch(this._baseUrl + 'users/me/avatar', {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: data.avatar,
+      })
     })
       .then(this._errorHandler);
   }

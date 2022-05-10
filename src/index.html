@@ -12,7 +12,10 @@
   </header>
   <main class="content">
     <section class="profile">
-      <img class="profile__image" src="<%=require('../src/images/avatar.jpg')%>" alt="Аватарка">
+      <div class="profile__avatar">
+        <span class="profile__edit-avatar"></span>
+        <img class="profile__image" src="" alt="Аватарка">
+      </div>
       <div class="profile__info">
         <div class="profile__edit-name">
           <h1 class="profile__name"></h1>
@@ -102,12 +105,29 @@
         </form>
       </div>
     </div>
+    <div class="popup popup-update-avatar">
+      <div class="popup__container">
+        <div class="popup__overlay"></div>
+        <form name="update-avatar" class="popup__form form-update-avatar" novalidate>
+          <h2 class="popup__title">Обновить аватар</h2>
+          <button type="button" class="popup__close close-add-places"></button>
+          <div class="popup__inputs">
+            <label class="popup__label">
+              <input id="avatar-link" class="popup__input popup__input_text_avatar-link" type="url" name="avatar-link"
+                     placeholder="Ссылка на аватар" required>
+              <span class="popup__input-error avatar-link-error"></span>
+            </label>
+          </div>
+          <button type="submit" class="popup__btn">Сохранить</button>
+        </form>
+      </div>
+    </div>
   </main>
   <footer class="footer">
     <p class="footer__copyright">
       &#169; 2020 Mesto Russia
     </p>
-    
+  
   </footer>
 </div>
 </body>

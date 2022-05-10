@@ -2,11 +2,10 @@
   display: block;
   width: 120px;
   height: 120px;
-  object-fit: cover;
   border-radius: 50%;
+  object-fit: cover;
+  transition: opacity .3s;
+  cursor: pointer;
 }
-@media (max-width: 739px)  {
-  .profile__image {
-    margin: 0 0 28px 0;
-  }
-}
+
+
