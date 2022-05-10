@@ -24,7 +24,7 @@ export default class PopupWithForm extends Popup {
 
   open() {
     super.open();
-    this._checkInputsValue();
+    if (this._checkInputsValue) this._checkInputsValue();
   }
 
   close() {

@@ -62,5 +62,18 @@ module.exports = {
     port: 9000,
     open: true
   },
-  devtool: 'source-map' // Выставляем, чтобы во время разработки видеть реальные названия файлов в консоли. Нужно удалять, когда разработка закончилась
+  devtool: 'source-map', // Выставляем, чтобы во время разработки видеть реальные названия файлов в консоли. Нужно удалять, когда разработка закончилась
+  // resolve: {
+  //   fallback: {
+  //     assert: false,
+  //     fs: false,
+      // path: false,
+      // url: false,
+      // util: false,
+      // assert: require.resolve('assert'),
+      // path: require.resolve('path-browserify'),
+      // url: require.resolve('url/'),
+      // util: require.resolve('util'),
+    // },
+  // },
 }

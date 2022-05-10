@@ -1,16 +1,19 @@
 import {api} from './index.js';
+import PopupWithForm from "./PopupWithForm";
+import {popupConfirmationSelector} from "../utils/constants";
 
 //Создаем класс карточки
 export default class Card {
-  constructor({name, link, likes, _id, handleCardClick, handleCartClick}, cardSelector) {
+  constructor({name, link, likes, _id, owner, userInfo, handleCardClick}, cardSelector) {
     this._title = name;
     this._image = link;
     this._likes = likes;
     this._id = _id;
+    this._owner = owner;
     this._handleCardClick = handleCardClick;
-    this._handleCartClick = handleCartClick;
     this._cardSelector = cardSelector;
 
+    this._userInfo = userInfo;
   }
 
   // Получаем клон шаблона карточки
@@ -26,14 +29,40 @@ export default class Card {
     this._likeButton.classList.toggle('place__favorite_active');
   }
 
+  // удаляем
+  openPopupTrash() {
+
+    // готовим модальное окно
+    const popup = new PopupWithForm({
+      popupSelector: popupConfirmationSelector,
+      handleSubmitForm: () => {
+        api.deleteCard(this._id)
+          .then(() => {
+
+            this.handleRemovePlace();
+          })
+          // Выводим ошибку, если что-то пошло не так
+          .catch((err) => console.log(err));
+
+      },
+    });
+
+    // открываем
+    popup.open();
+
+    // слушаем
+    popup.setEventListeners();
+  }
+
   // Показываем корзину, если картинка своя
   _checkOwnerId() {
-      api.getProfileInfo()
-        .then((data) => {
-          if (data._id === this._id) {
-            this._element.querySelector('.place__cart').classList.add('place__cart-active');
-          }
-        })
+
+    const userData = this._userInfo.getUserInfo()
+
+    // проверяем, совпадает ли наш айди юзера с айди автора
+    if (userData._id === this._owner._id) {
+      this._element.querySelector('.place__cart').classList.add('place__cart-active');
+    }
   }
 
   // Удаляем карточки Place со страницы по нажатию на корзину
@@ -48,7 +77,7 @@ export default class Card {
       this._handleLikePlace(evt);
     });
     this._element.querySelector('.place__cart').addEventListener('click', () => {
-      this._handleCartClick();
+      this.openPopupTrash();
     });
     this._element.querySelector('.place__image').addEventListener('click', () => {
       this._handleCardClick();

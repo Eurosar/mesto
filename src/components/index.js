@@ -16,7 +16,7 @@ import {
   jobInput,
   namePlaceInput,
   imageLinkInput,
-  settingObject, nameProfileSelector, jobProfileSelector, avatarProfileSelector, popupConfirmationSelector
+  settingObject, nameProfileSelector, jobProfileSelector, avatarProfileSelector
 } from '../utils/constants.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
@@ -35,18 +35,23 @@ export const api = new Api({
   }
 });
 
+// Создаем экземпляр класса, который вставляет начальный массив картинок
 const defaultPlacesList = new Section({
   renderer: (item) => {
     defaultPlacesList.addItem(outputPlaceCard(item));
   }
 }, placesListSelector);
+
+// Отрендерим массив картинок
 defaultPlacesList.renderItems();
 
-const user = api.getProfileInfo();
-user
+// Получим с сервера данные о пользователе
+api.getProfileInfo()
   .then((data) => {
     userInfo.setUserInfo(data);
 })
+
+  // Вызовем ошибку, если что-то пойдет не так
   .catch((err) => console.log(err));
 
 // Создаем карточку места
@@ -54,18 +59,16 @@ const outputPlaceCard = item => {
   const card = new Card({
       name: item.name,
       link: item.link,
-      likes: item.likes || [],
-      _id: item.owner._id,
+      likes: item.likes,
+      owner: item.owner,
+      _id: item._id,
+      userInfo: userInfo,
       handleCardClick: () => {
         popupImagePlaces.open(item.name, item.link);
-      },
-    handleCartClick: () => {
-      popupConfirmation.open();
-    }
+      }
     },
     '.place-template');
-  const cardElement = card.generateCard();
-  return cardElement;
+  return card.generateCard();
 };
 
 
@@ -76,11 +79,14 @@ const popupImagePlaces = new PopupWithImage(popupPlaceImageSelector);
 // Создаем модальное окно данных user
 const popupProfile = new PopupWithForm({
   popupSelector: popupProfileEditorSelector,
+  // Отправляем на сервер имя картинки и ссылку на нее
   handleSubmitForm: (formData) => {
     api.changeUserInfo(formData)
       .then((data) => {
         userInfo.setUserInfo(data);
-      });
+      })
+      // Выводим ошибку, если что-то пошло не так
+      .catch((err) => console.log(err));
   },
   checkInputsValue: () => {
     const userData = userInfo.getUserInfo();
@@ -94,13 +100,21 @@ const popupProfile = new PopupWithForm({
 //Создаем модальное окно добавления новых карточек
 const popupPlace = new PopupWithForm({
   popupSelector: popupAddPlacesSelector,
-  handleSubmitForm: ({name, link}) => {
-    name = namePlaceInput.value;
-    link = imageLinkInput.value;
-    api.postNewCard({name, link})
-      .then(({name, link}) => {
-        defaultPlacesList.addItem(outputPlaceCard({name, link}));
+
+  // Отправляем на сервер имя картинки и ссылку на нее
+  handleSubmitForm: () => {
+    api.postNewCard({
+      name: namePlaceInput.value,
+      link: imageLinkInput.value
+    })
+      // Получаем результат с данными картинки
+      .then((item) => {
+
+        // Отправляем в рендер
+        defaultPlacesList.addItem(outputPlaceCard(item));
       })
+
+      // Выводим ошибку, если что-то пошло не так
       .catch((err) => console.log(err));
 
   },
@@ -110,20 +124,11 @@ const popupPlace = new PopupWithForm({
   }
 });
 
-const popupConfirmation = new PopupWithForm({
-  popupSelector: popupConfirmationSelector,
-  handleSubmitForm: () => {
-    console.log('confirm');
-    // card.handleRemovePlace();
-  },
-  checkInputsValue: () => {}
-});
 
 // Вешаем слушатели модальных окон
 popupImagePlaces.setEventListeners();
 popupProfile.setEventListeners();
 popupPlace.setEventListeners();
-popupConfirmation.setEventListeners();
 
 // Вешаем слушатели на кнопки открытия модальных окон
 profileEditButton.addEventListener('click', () => {

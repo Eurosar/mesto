@@ -8,24 +8,23 @@ export default class UserInfo {
     this._avatar = document.querySelector(this._avatarSelector);
   }
 
-  getUserId(data) {
-   const id = data._id;
-   console.log(`My id: ${id}`);
-   return id
-  }
-
   getUserInfo() {
     const objectUserInfo = {
       name: this._name.textContent,
-      job: this._job.textContent
+      job: this._job.textContent,
+
+      // Отдаем полученный id пользователя в объект
+      _id: this._id
     };
     return objectUserInfo;
   }
 
-  setUserInfo({ name, about, avatar}) {
-    this._name.textContent = name;
-    this._job.textContent = about;
-    this._avatar.src = avatar;
+  setUserInfo(data) {
+    this._name.textContent = data.name;
+    this._job.textContent = data.about;
+    this._avatar.src = data.avatar;
 
+    // Запомним id пользователя
+    this._id = data._id;
   }
 }
