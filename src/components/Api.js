@@ -63,5 +63,13 @@ export default class Api {
     })
       .then(this._errorHandler);
   }
+
+  likeCard(method, cardId) {
+    return fetch(this._baseUrl + 'cards/' + cardId + '/likes', {
+      method: method,
+      headers: this._headers,
+    })
+      .then(this._errorHandler);
+  }
 }
 

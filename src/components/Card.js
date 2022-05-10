@@ -25,8 +25,29 @@ export default class Card {
   }
 
   // Like фотографии
+  // Like фотографии, устанавливаем или снимаем
   _handleLikePlace() {
-    this._likeButton.classList.toggle('place__favorite_active');
+
+    // если лайк уже стоит, то удаляем и наоборот
+    api.likeCard(this._setLike ? 'DELETE' : 'PUT', this._id).then(res => {
+      console.log('res:', res);
+
+      // получив новые данные, запомним их
+      this._likes = res.likes;
+
+      // поставим новое кол-во лайков
+      this._likeCounter.textContent = res.likes.length;
+
+      // а так же сменим статус текущего лайка на противоположный
+      this._setLike = !this._setLike;
+
+      // и удалим или оставим класс на лайке
+      if (this._setLike) {
+        this._likeButton.classList.add('place__favorite_active');
+      } else {
+        this._likeButton.classList.remove('place__favorite_active');
+      }
+    });
   }
 
   // удаляем
@@ -65,6 +86,29 @@ export default class Card {
     }
   }
 
+  _checkUsersLike() {
+
+    // получим данные юзера
+    const userData = this._userInfo.getUserInfo()
+
+    // идем по всем лайкам, чтобы узнать
+    for (let k in this._likes) {
+      // если айди текущего юзера и лайка совпадают
+      if (this._likes[k]._id === userData._id) {
+
+        // поставим лайк и пометим, что он стоит
+        this._likeButton.classList.add('place__favorite_active');
+        this._setLike = true;
+
+        console.warn('лукас стоит на фото:', this._title);
+
+        // досрочно завершаем цикл
+        break;
+      }
+    }
+  }
+
+
   // Удаляем карточки Place со страницы по нажатию на корзину
   handleRemovePlace() {
     this._element.remove();
@@ -95,7 +139,11 @@ export default class Card {
     this._imageData.src = this._image;
     this._imageData.alt = this._title;
     this._likeCounter.textContent = this._likes.length;
+    // проверим авторство данной картинки
     this._checkOwnerId();
+
+    // проверим установку лайка текущим юзером
+    this._checkUsersLike();
     return this._element;
   }
 }
