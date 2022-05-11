@@ -123,7 +123,10 @@ const popupProfile = new PopupWithForm({
         userInfo.setUserInfo(data);
       })
       // Выводим ошибку, если что-то пошло не так
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally ( () => {
+        popupProfile.renderLoading(false);
+      });
   },
   checkInputsValue: () => {
     const userData = userInfo.getUserInfo();
@@ -152,7 +155,10 @@ const popupPlace = new PopupWithForm({
       })
 
       // Выводим ошибку, если что-то пошло не так
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally ( () => {
+        popupPlace.renderLoading(false);
+      });
 
   },
   checkInputsValue: () => {
@@ -172,7 +178,10 @@ const popupAvatar = new PopupWithForm({
       .then((data) => {
         console.log('data Avatar:', data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally ( () => {
+        popupAvatar.renderLoading(false);
+      });
   },
   checkInputsValue: () => {
     formValidatorAvatar.toggleButtonState();
