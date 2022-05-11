@@ -4,13 +4,16 @@ import Popup from './Popup.js';
 export default class PopupWithForm extends Popup {
   constructor({ popupSelector, handleSubmitForm, checkInputsValue }) {
     super(popupSelector);
-    this._handleSubmitForm = handleSubmitForm;
+    this.handleSubmitForm = handleSubmitForm;
     this._checkInputsValue = checkInputsValue;
+    this._form = this._popup.querySelector(settingObject.formSelector);
+    this._inputList = this._popup.querySelectorAll(settingObject.inputSelector);
+    this._popupButton = this._form.querySelector(settingObject.submitButtonSelector);
+    this._buttonYes = this._form.querySelector('.popup__btn-yes');
   }
 
   //Получаем объект из inputs формы
   _getInputValues() {
-    this._inputList = this._popupSelector.querySelectorAll('.popup__input');
 
     // создаём пустой объект
     this._formValues = {};
@@ -41,24 +44,24 @@ export default class PopupWithForm extends Popup {
 
   // Показываем пользователю, что происходит загрузка
   renderLoading(isLoading) {
-    if (isLoading) {
-      this._form.querySelector('.popup__btn').textContent = 'Сохранить...';
-    }
-    else {
-      this._form.querySelector('.popup__btn').textContent = 'Сохранить';
-    }
+      if (isLoading) {
+        this._popupButton.textContent = 'Сохранить...';
+      }
+      else {
+        this._popupButton.textContent = 'Сохранить';
+      }
   }
 
   // Объединяем слушателей
   setEventListeners() {
     // Наследуем метод из родителя(Popup)
     super.setEventListeners();
-    this._form = this._popupSelector.querySelector(settingObject.formSelector);
     this._form.addEventListener('submit', (event) => {
+      if (!this._buttonYes) {
+        this.renderLoading(true);
+      }
       event.preventDefault();
-      this.renderLoading(true);
-      this._handleSubmitForm(this._getInputValues());
-      this.close();
+      this.handleSubmitForm(this._getInputValues());
     });
   }
 }

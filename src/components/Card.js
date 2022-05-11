@@ -1,18 +1,16 @@
-import {api} from './index.js';
-
 //Создаем класс карточки
 export default class Card {
-  constructor({name, link, likes, _id, owner, userInfo, handleCardClick, handleTrashClick}, cardSelector) {
+  constructor({name, link, likes, _id, owner, api, userId, handleCardClick, handleTrashClick}, cardSelector) {
     this._title = name;
     this._image = link;
     this._likes = likes;
     this._id = _id;
     this._owner = owner;
+    this._api = api;
+    this._userId = userId;
     this._handleCardClick = handleCardClick;
     this._handleTrashClick = handleTrashClick;
     this._cardSelector = cardSelector;
-
-    this._userInfo = userInfo;
   }
 
   // Получаем клон шаблона карточки
@@ -27,7 +25,7 @@ export default class Card {
   _handleLikePlace() {
 
     // если лайк уже стоит, то удаляем и наоборот
-    api.likeCard(this._setLike ? 'DELETE' : 'PUT', this._id)
+    this._api.likeCard(this._setLike ? 'DELETE' : 'PUT', this._id)
       .then((res) => {
 
         // получив новые данные, запомним их
@@ -45,7 +43,8 @@ export default class Card {
         } else {
           this._likeButton.classList.remove('place__favorite_active');
         }
-    });
+      })
+      .catch((err) => console.error(err));
   }
 
   // нажимаем по мусорной корзине
@@ -57,24 +56,19 @@ export default class Card {
 
   // Показываем корзину, если картинка своя
   _checkOwnerId() {
-
-    const userData = this._userInfo.getUserInfo();
-
+    console.log(this._userId);
     // проверяем, совпадает ли наш id юзера с id автора
-    if (userData._id === this._owner._id) {
+    if (this._userId === this._owner._id) {
       this._element.querySelector('.place__cart').classList.add('place__cart-active');
     }
   }
 
   _checkUsersLike() {
 
-    // получим данные юзера
-    const userData = this._userInfo.getUserInfo()
-
     // идем по всем лайкам, чтобы узнать
     for (let k in this._likes) {
       // если айди текущего юзера и лайка совпадают
-      if (this._likes[k]._id === userData._id) {
+      if (this._likes[k]._id === this._userId) {
 
         // поставим лайк и пометим, что он стоит
         this._likeButton.classList.add('place__favorite_active');

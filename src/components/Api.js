@@ -4,8 +4,8 @@ export default class Api {
     this._headers = options.headers;
   }
 
-  // Проверяем отправку запроса на ошибки
-  _errorHandler(res) {
+  // Проверяем ответ с сервера на ошибки
+  _checkResponse(res) {
       if (res.ok) {
         return res.json();
       }
@@ -22,7 +22,7 @@ export default class Api {
       method: 'GET',
       headers: this._headers
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -33,7 +33,7 @@ export default class Api {
     return fetch(this._baseUrl + 'users/me', {
       headers: this._headers
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -50,7 +50,7 @@ export default class Api {
         about: data.job,
       })
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -67,7 +67,7 @@ export default class Api {
         link: data.link,
       })
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -80,7 +80,7 @@ export default class Api {
       method: 'DELETE',
       headers: this._headers,
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -94,7 +94,7 @@ export default class Api {
       method: method,
       headers: this._headers,
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 
   /**
@@ -110,7 +110,7 @@ export default class Api {
         avatar: data.avatar
       })
     })
-      .then(this._errorHandler);
+      .then(this._checkResponse);
   }
 }
 

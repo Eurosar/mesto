@@ -2,7 +2,7 @@
 
 
 // Импорт файлов webpack
-import '../pages/index.css';
+import './index.css';
 import {
   popupProfileEditorSelector,
   popupAddPlacesSelector,
@@ -23,13 +23,13 @@ import {
   popupConfirmationSelector,
   profileEditAvatar, popupUpdateAvatar, formProfileUpdateElement
 } from '../utils/constants.js';
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
-import Section from './Section.js';
-import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
-import UserInfo from './UserInfo.js';
-import Api from './Api.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/Section.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import UserInfo from '../components/UserInfo.js';
+import Api from '../components/Api.js';
 
 // Создадим экземпляр класса Api
 export const api = new Api({
@@ -41,24 +41,46 @@ export const api = new Api({
 });
 
 // Создаем экземпляр класса, который вставляет начальный массив картинок
-const defaultPlacesList = new Section({
-  renderer: (item) => {
-    defaultPlacesList.addItem(outputPlaceCard(item));
-  }
-}, placesListSelector);
+const defaultPlacesList = new Section(
+  placesListSelector
+);
 
 // Отрендерим массив картинок
 defaultPlacesList.renderItems();
 
-// Получим с сервера данные о пользователе
-api.getProfileInfo()
-  .then((data) => {
-    userInfo.setUserInfo(data);
-  })
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
+  // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  .then(([userData, cards]) => {
+    // тут установка данных пользователя
+    console.log('userData' ,userData);
+    userInfo.setUserInfo(userData);
 
-  // Вызовем ошибку, если что-то пойдет не так
+    // и тут отрисовка карточек
+    console.log('cards' ,cards);
+    cards.forEach(item => {
+      defaultPlacesList.renderer(item);
+      console.log(item);
+    });
+
+  })
   .catch((err) => console.log(err));
 
+// // Получим с сервера данные о пользователе
+// api.getProfileInfo()
+//   .then((data) => {
+//     userInfo.setUserInfo(data);
+//   })
+//
+//   // Вызовем ошибку, если что-то пойдет не так
+//   .catch((err) => console.log(err));
+//
+// api.getInitialCards()
+//   .then((data) => {
+//     data.forEach(item => {
+//       this._renderer(item);
+//     });
+//   })
+//   .catch((err) => console.log(err));
 
 // готовим модальное окно
 const popupCardRemove = new PopupWithForm({
@@ -78,7 +100,8 @@ const outputPlaceCard = item => {
     likes: item.likes,
     owner: item.owner,
     _id: item._id,
-    userInfo: userInfo,
+    api: api,
+    userId: userInfo.getUserInfo()._id,
     handleCardClick: () => {
       popupImagePlaces.open(item.name, item.link);
     },
@@ -92,12 +115,15 @@ const outputPlaceCard = item => {
       // установим коллбек который сработает при нажатии на "Да",
       // то есть, мы переоформим в попапе функцию, которая назначается как this.__handleSubmitForm,
       // чтобы добавить данные карточки, но при этом создать попап заранее
-      popupCardRemove._handleSubmitForm = () => {
+      popupCardRemove.handleSubmitForm = () => {
         api.deleteCard(item._id)
-          .then(()=> {
-
+          .then(() => {
+            popupCardRemove.close();
             // вызовем удаление карточки
             card.handleRemovePlace();
+          })
+          .then(() => {
+
           })
           // Выводим ошибку, если что-то пошло не так
           .catch((err) => console.error(err));
@@ -119,8 +145,10 @@ const popupProfile = new PopupWithForm({
   handleSubmitForm: (formData) => {
     api.changeUserInfo(formData)
       .then((data) => {
-        console.log(data);
         userInfo.setUserInfo(data);
+      })
+      .then(() => {
+        popupProfile.close();
       })
       // Выводим ошибку, если что-то пошло не так
       .catch((err) => console.log(err))
@@ -153,6 +181,9 @@ const popupPlace = new PopupWithForm({
         // Отправляем в рендер
         defaultPlacesList.addItem(outputPlaceCard(item));
       })
+      .then(() => {
+        popupPlace.close();
+      })
 
       // Выводим ошибку, если что-то пошло не так
       .catch((err) => console.log(err))
@@ -176,6 +207,9 @@ const popupAvatar = new PopupWithForm({
     api.updateAvatar(formData)
       .then((data) => {
         userInfo.setUserInfo(data);
+      })
+      .then(() => {
+        popupAvatar.close();
       })
       .catch((err) => console.log(err))
       .finally ( () => {
