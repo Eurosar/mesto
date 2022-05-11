@@ -1,6 +1,4 @@
 import {api} from './index.js';
-// import PopupWithForm from "./PopupWithForm";
-// import {popupConfirmationSelector} from "../utils/constants";
 
 //Создаем класс карточки
 export default class Card {
@@ -25,36 +23,35 @@ export default class Card {
       .cloneNode(true);
   }
 
-  // Like фотографии
   // Like фотографии, устанавливаем или снимаем
   _handleLikePlace() {
 
     // если лайк уже стоит, то удаляем и наоборот
-    api.likeCard(this._setLike ? 'DELETE' : 'PUT', this._id).then(res => {
-      console.log('res:', res);
+    api.likeCard(this._setLike ? 'DELETE' : 'PUT', this._id)
+      .then((res) => {
 
-      // получив новые данные, запомним их
-      this._likes = res.likes;
+        // получив новые данные, запомним их
+        this._likes = res.likes;
 
-      // поставим новое кол-во лайков
-      this._likeCounter.textContent = res.likes.length;
+        // поставим новое кол-во лайков
+        this._likeCounter.textContent = res.likes.length;
 
-      // а так же сменим статус текущего лайка на противоположный
-      this._setLike = !this._setLike;
+        // а так же сменим статус текущего лайка на противоположный
+        this._setLike = !this._setLike;
 
-      // и удалим или оставим класс на лайке
-      if (this._setLike) {
-        this._likeButton.classList.add('place__favorite_active');
-      } else {
-        this._likeButton.classList.remove('place__favorite_active');
-      }
+        // и удалим или оставим класс на лайке
+        if (this._setLike) {
+          this._likeButton.classList.add('place__favorite_active');
+        } else {
+          this._likeButton.classList.remove('place__favorite_active');
+        }
     });
   }
 
   // нажимаем по мусорной корзине
   _openPopupTrash() {
 
-    // вызываем попап
+    // вызываем модальное окно
     this._handleTrashClick();
   }
 
@@ -63,7 +60,7 @@ export default class Card {
 
     const userData = this._userInfo.getUserInfo();
 
-    // проверяем, совпадает ли наш айди юзера с айди автора
+    // проверяем, совпадает ли наш id юзера с id автора
     if (userData._id === this._owner._id) {
       this._element.querySelector('.place__cart').classList.add('place__cart-active');
     }
@@ -119,6 +116,7 @@ export default class Card {
     this._imageData.src = this._image;
     this._imageData.alt = this._title;
     this._likeCounter.textContent = this._likes.length;
+
     // проверим авторство данной картинки
     this._checkOwnerId();
 

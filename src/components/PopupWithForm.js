@@ -1,4 +1,4 @@
-import { popupFormSelector } from '../utils/constants.js';
+import {settingObject} from '../utils/constants.js';
 import Popup from './Popup.js';
 
 export default class PopupWithForm extends Popup {
@@ -8,6 +8,7 @@ export default class PopupWithForm extends Popup {
     this._checkInputsValue = checkInputsValue;
   }
 
+  //Получаем объект из inputs формы
   _getInputValues() {
     this._inputList = this._popupSelector.querySelectorAll('.popup__input');
 
@@ -22,16 +23,23 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  // Открываем модальное окно
   open() {
+    // Наследуем метод из родителя(Popup)
     super.open();
+    // Проверяем, если эта функция не нужна, то не обращаем на нее внимания
     if (this._checkInputsValue) this._checkInputsValue();
   }
 
+  // Закрываем модальное окно
   close() {
+    // Наследуем метод из родителя(Popup)
     super.close();
+    // Сбрасываем значения всех полей формы
     this._form.reset();
   }
 
+  // Показываем пользователю, что происходит загрузка
   renderLoading(isLoading) {
     if (isLoading) {
       this._form.querySelector('.popup__btn').textContent = 'Сохранить...';
@@ -41,9 +49,11 @@ export default class PopupWithForm extends Popup {
     }
   }
 
+  // Объединяем слушателей
   setEventListeners() {
+    // Наследуем метод из родителя(Popup)
     super.setEventListeners();
-    this._form = this._popupSelector.querySelector(popupFormSelector);
+    this._form = this._popupSelector.querySelector(settingObject.formSelector);
     this._form.addEventListener('submit', (event) => {
       event.preventDefault();
       this.renderLoading(true);

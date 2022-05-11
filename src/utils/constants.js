@@ -6,7 +6,6 @@ export const popupPlaceImageSelector = '.popup-place-image';
 export const popupUpdateAvatar = '.popup-update-avatar';
 
 // Находим формы и их элементы
-export const popupFormSelector = '.popup__form';
 export const formProfileEditElement = document.querySelector('.form-profile-editor');
 export const formProfileAddElement = document.querySelector('.form-add-places');
 export const formProfileUpdateElement = document.querySelector('.form-update-avatar');
@@ -31,8 +30,15 @@ export const avatarProfileSelector = '.profile__image';
 export const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');
 export const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_image-link');
 
-//Обработчик данных input в popup avatar update
-export const avatarLink = formProfileUpdateElement.querySelector('.popup__input_text_avatar-link');
+// Объект настроек
+export const settingObject = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__btn',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
 
 //Массив карточек мест из коробки
 // export const initialCards = [
@@ -61,13 +67,3 @@ export const avatarLink = formProfileUpdateElement.querySelector('.popup__input_
 //     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
 //   }
 // ];
-
-
-export const settingObject = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__btn',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-};

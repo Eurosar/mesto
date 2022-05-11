@@ -8,17 +8,19 @@ export default class UserInfo {
     this._avatar = document.querySelector(this._avatarSelector);
   }
 
+  // Получаем объект данных пользователя
   getUserInfo() {
     const objectUserInfo = {
       name: this._name.textContent,
       job: this._job.textContent,
 
-      // Отдаем полученный id пользователя в объект
+      // Отдаем полученный id пользователя из setUserInfo(data) в объект
       _id: this._id
     };
     return objectUserInfo;
   }
 
+  // Присваиваем данные из объекта
   setUserInfo(data) {
     this._name.textContent = data.name;
     this._job.textContent = data.about;

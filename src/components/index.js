@@ -173,10 +173,9 @@ const popupAvatar = new PopupWithForm({
   popupSelector: popupUpdateAvatar,
 
   handleSubmitForm: (formData) => {
-    console.log('formData', formData);
     api.updateAvatar(formData)
       .then((data) => {
-        console.log('data Avatar:', data);
+        userInfo.setUserInfo(data);
       })
       .catch((err) => console.log(err))
       .finally ( () => {
