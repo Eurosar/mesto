@@ -63,26 +63,6 @@ const defaultPlacesList = new Section({
   placesListSelector
 );
 
-// Отрендерим массив картинок
-// defaultPlacesList.renderItems();
-
-// // Получим с сервера данные о пользователе
-// api.getProfileInfo()
-//   .then((data) => {
-//     userInfo.setUserInfo(data);
-//   })
-//
-//   // Вызовем ошибку, если что-то пойдет не так
-//   .catch((err) => console.log(err));
-//
-// api.getInitialCards()
-//   .then((data) => {
-//     data.forEach(item => {
-//       this._renderer(item);
-//     });
-//   })
-//   .catch((err) => console.log(err));
-
 // готовим модальное окно
 const popupCardRemove = new PopupWithForm({
   popupSelector: popupConfirmationSelector,
