@@ -14,8 +14,6 @@ import {
   formProfileAddElement,
   nameInput,
   jobInput,
-  namePlaceInput,
-  imageLinkInput,
   settingObject,
   nameProfileSelector,
   jobProfileSelector,
@@ -40,15 +38,16 @@ export const api = new Api({
   }
 });
 
+// Создаем Promise.all, чтобы сначала получить данные пользователя и карточек
+// а затем уже продолжать работу скрипта
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
-  // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  // Деструктурируем ответ от сервера, чтобы было понятнее, что пришло
   .then(([userData, cards]) => {
-    // тут установка данных пользователя
-    console.log('userData' ,userData);
+
+    // Установим данные пользователя
     userInfo.setUserInfo(userData);
 
-    // и тут отрисовка карточек
-    console.log('cards' ,cards);
+    // Отрисуем карточки
     defaultPlacesList.renderItems(cards);
 
   })
@@ -151,10 +150,10 @@ const popupPlace = new PopupWithForm({
   popupSelector: popupAddPlacesSelector,
 
   // Отправляем на сервер имя картинки и ссылку на нее
-  handleSubmitForm: () => {
+  handleSubmitForm: (formData) => {
     api.postNewCard({
-      name: namePlaceInput.value,
-      link: imageLinkInput.value
+      name: formData.name,
+      link: formData.link
     })
       // Получаем результат с данными картинки
       .then((item) => {

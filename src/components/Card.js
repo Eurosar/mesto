@@ -56,7 +56,6 @@ export default class Card {
 
   // Показываем корзину, если картинка своя
   _checkOwnerId() {
-    console.log(this._userId);
     // проверяем, совпадает ли наш id юзера с id автора
     if (this._userId === this._owner._id) {
       this._element.querySelector('.place__cart').classList.add('place__cart-active');

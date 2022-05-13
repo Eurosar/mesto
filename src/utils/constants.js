@@ -26,10 +26,6 @@ export const nameProfileSelector = '.profile__name';
 export const jobProfileSelector = '.profile__job';
 export const avatarProfileSelector = '.profile__image';
 
-//Обработчик данных input в popup add place
-export const namePlaceInput = formProfileAddElement.querySelector('.popup__input_text_name-place');
-export const imageLinkInput = formProfileAddElement.querySelector('.popup__input_text_image-link');
-
 // Объект настроек
 export const settingObject = {
   formSelector: '.popup__form',
