@@ -40,14 +40,6 @@ export const api = new Api({
   }
 });
 
-// Создаем экземпляр класса, который вставляет начальный массив картинок
-const defaultPlacesList = new Section(
-  placesListSelector
-);
-
-// Отрендерим массив картинок
-defaultPlacesList.renderItems();
-
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   .then(([userData, cards]) => {
@@ -57,13 +49,22 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
 
     // и тут отрисовка карточек
     console.log('cards' ,cards);
-    cards.forEach(item => {
-      defaultPlacesList.renderer(item);
-      console.log(item);
-    });
+    defaultPlacesList.renderItems(cards);
 
   })
   .catch((err) => console.log(err));
+
+// Создаем экземпляр класса, который вставляет начальный массив картинок
+const defaultPlacesList = new Section({
+    renderer: (item) => {
+      defaultPlacesList.addItem(outputPlaceCard(item));
+    }
+},
+  placesListSelector
+);
+
+// Отрендерим массив картинок
+// defaultPlacesList.renderItems();
 
 // // Получим с сервера данные о пользователе
 // api.getProfileInfo()
