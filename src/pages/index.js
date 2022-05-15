@@ -65,7 +65,7 @@ const defaultPlacesList = new Section({
 // готовим модальное окно
 const popupCardRemove = new PopupWithForm({
   popupSelector: popupConfirmationSelector,
-
+  noLoading: true
   // будет отложенный коллбэк, прямо внизу карточки
   // handleSubmitForm: () => {},
 });
@@ -101,9 +101,6 @@ const outputPlaceCard = item => {
             popupCardRemove.close();
             // вызовем удаление карточки
             card.handleRemovePlace();
-          })
-          .then(() => {
-
           })
           // Выводим ошибку, если что-то пошло не так
           .catch((err) => console.error(err));

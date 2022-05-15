@@ -2,14 +2,14 @@ import {settingObject} from '../utils/constants.js';
 import Popup from './Popup.js';
 
 export default class PopupWithForm extends Popup {
-  constructor({ popupSelector, handleSubmitForm, checkInputsValue }) {
+  constructor({ popupSelector, handleSubmitForm, checkInputsValue, noLoading }) {
     super(popupSelector);
     this.handleSubmitForm = handleSubmitForm;
     this._checkInputsValue = checkInputsValue;
     this._form = this._popup.querySelector(settingObject.formSelector);
     this._inputList = this._popup.querySelectorAll(settingObject.inputSelector);
     this._popupButton = this._form.querySelector(settingObject.submitButtonSelector);
-    this._buttonYes = this._form.querySelector('.popup__btn-yes');
+    this._noLoading = noLoading;
   }
 
   //Получаем объект из inputs формы
@@ -57,7 +57,7 @@ export default class PopupWithForm extends Popup {
     // Наследуем метод из родителя(Popup)
     super.setEventListeners();
     this._form.addEventListener('submit', (event) => {
-      if (!this._buttonYes) {
+      if (!this._noLoading) {
         this.renderLoading(true);
       }
       event.preventDefault();
